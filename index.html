@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IntelAgent — AI That Actually Knows You</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dark: #0a0a0f;
+    --darker: #06060a;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #ffffff0f;
+    --accent: #7c6af7;
+    --accent2: #a78bfa;
+    --accent3: #38bdf8;
+    --gold: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --text: #f1f0ff;
+    --muted: #8882aa;
+    --subtle: #4a4870;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--darker);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(6,6,10,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+  .logo span { color: var(--accent2); }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ── SECTIONS ── */
+  section { padding: 120px 60px; max-width: 1200px; margin: 0 auto; }
+
+  /* ── HERO ── */
+  .hero-wrap {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    max-width: 100%;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(124,106,247,0.15) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+    top: 30%; right: 10%;
+    pointer-events: none;
+  }
+  .hero-content {
+    text-align: center;
+    max-width: 900px;
+    padding: 120px 60px;
+    position: relative; z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(124,106,247,0.12);
+    border: 1px solid rgba(124,106,247,0.3);
+    padding: 8px 16px; border-radius: 100px;
+    font-size: 13px; font-weight: 500; color: var(--accent2);
+    margin-bottom: 32px;
+  }
+  .hero-badge::before { content: '●'; color: var(--green); font-size: 8px; }
+  h1 {
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -3px;
+    margin-bottom: 28px;
+  }
+  h1 .highlight {
+    background: linear-gradient(135deg, var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 20px;
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 48px;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+  .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #6d28d9);
+    color: white;
+    padding: 16px 36px;
+    border-radius: 10px;
+    font-size: 16px; font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 40px rgba(124,106,247,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(124,106,247,0.4); }
+  .btn-secondary {
+    background: var(--surface2);
+    color: var(--text);
+    padding: 16px 36px;
+    border-radius: 10px;
+    font-size: 16px; font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); }
+
+  /* ── PROBLEM ── */
+  .section-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 3px;
+    color: var(--accent2); text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 800; letter-spacing: -2px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .lead {
+    font-size: 18px; color: var(--muted);
+    max-width: 640px; line-height: 1.7;
+    margin-bottom: 60px;
+  }
+
+  .problem-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .problem-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px;
+    transition: border-color 0.3s;
+  }
+  .problem-card:hover { border-color: rgba(124,106,247,0.3); }
+  .problem-icon { font-size: 32px; margin-bottom: 16px; }
+  .problem-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+  .problem-card p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+
+  /* ── SOLUTION ── */
+  .solution-wrap { background: var(--surface); }
+  .solution-inner { max-width: 1200px; margin: 0 auto; padding: 120px 60px; }
+  .solution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .solution-features { display: flex; flex-direction: column; gap: 32px; }
+  .feature-item { display: flex; gap: 20px; align-items: flex-start; }
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    background: rgba(124,106,247,0.12);
+    border: 1px solid rgba(124,106,247,0.2);
+  }
+  .feature-text h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .feature-text p { font-size: 15px; color: var(--muted); line-height: 1.6; }
+
+  /* Terminal mock */
+  .terminal {
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+  }
+  .terminal-bar {
+    background: var(--surface2);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-red { background: #ff5f57; }
+  .dot-yellow { background: #febc2e; }
+  .dot-green { background: #28c840; }
+  .terminal-title { font-size: 13px; color: var(--muted); margin-left: 8px; font-weight: 500; }
+  .terminal-body { padding: 24px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; line-height: 2; }
+  .t-prompt { color: var(--accent2); }
+  .t-cmd { color: var(--text); }
+  .t-output { color: var(--muted); }
+  .t-success { color: var(--green); }
+  .t-alert { color: var(--gold); }
+  .t-value { color: var(--accent3); }
+
+  /* ── HOW IT WORKS ── */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 60px; }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .step:hover { border-color: rgba(124,106,247,0.4); transform: translateY(-4px); }
+  .step-num {
+    font-size: 48px; font-weight: 900;
+    color: rgba(124,106,247,0.15);
+    line-height: 1; margin-bottom: 16px;
+  }
+  .step h4 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+  .step p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* ── USE CASES ── */
+  .personas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+  .persona {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 36px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .persona:hover { border-color: rgba(124,106,247,0.4); transform: translateY(-4px); }
+  .persona-icon { font-size: 40px; margin-bottom: 20px; }
+  .persona h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+  .persona .tagline { font-size: 14px; color: var(--accent2); font-weight: 600; margin-bottom: 20px; }
+  .persona ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .persona ul li { font-size: 14px; color: var(--muted); padding-left: 20px; position: relative; line-height: 1.5; }
+  .persona ul li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+  /* ── PRICING ── */
+  .pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+  .plan {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 40px;
+    transition: transform 0.3s;
+  }
+  .plan:hover { transform: translateY(-4px); }
+  .plan.featured {
+    border-color: var(--accent);
+    background: linear-gradient(160deg, rgba(124,106,247,0.08), var(--surface));
+    box-shadow: 0 0 60px rgba(124,106,247,0.15);
+  }
+  .plan-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: 100px;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .plan-name { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+  .plan-price { font-size: 52px; font-weight: 900; letter-spacing: -2px; margin-bottom: 4px; }
+  .plan-price span { font-size: 20px; font-weight: 400; color: var(--muted); }
+  .plan-desc { font-size: 14px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+  .plan-features li { font-size: 15px; display: flex; align-items: flex-start; gap: 10px; }
+  .plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .plan-features li.muted { color: var(--muted); }
+  .plan-features li.muted::before { content: '—'; color: var(--subtle); }
+  .plan-btn {
+    display: block; width: 100%; text-align: center;
+    padding: 14px; border-radius: 10px;
+    font-size: 15px; font-weight: 700;
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .plan-btn.primary { background: var(--accent); color: white; }
+  .plan-btn.secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .plan-btn:hover { opacity: 0.85; }
+
+  /* ── NUMBERS ── */
+  .numbers-wrap {
+    background: linear-gradient(135deg, rgba(124,106,247,0.08), rgba(56,189,248,0.05));
+    border: 1px solid var(--border);
+    border-radius: 24px; padding: 80px 60px;
+    margin-top: 80px;
+  }
+  .numbers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-top: 48px; }
+  .number-item { text-align: center; }
+  .number-value { font-size: 52px; font-weight: 900; letter-spacing: -2px; }
+  .number-value.green { color: var(--green); }
+  .number-value.accent { color: var(--accent2); }
+  .number-value.blue { color: var(--accent3); }
+  .number-value.gold { color: var(--gold); }
+  .number-label { font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+  /* ── TESTIMONIAL ── */
+  .testimonials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+  .testimonial {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px;
+  }
+  .stars { color: var(--gold); font-size: 16px; margin-bottom: 16px; letter-spacing: 2px; }
+  .testimonial q { font-size: 15px; color: var(--text); line-height: 1.7; font-style: italic; }
+  .testimonial-author { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+  .author-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px;
+  }
+  .author-name { font-size: 14px; font-weight: 700; }
+  .author-title { font-size: 13px; color: var(--muted); }
+
+  /* ── CTA ── */
+  .cta-wrap {
+    text-align: center; padding: 160px 60px;
+    position: relative; overflow: hidden;
+    max-width: 100%;
+  }
+  .cta-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(124,106,247,0.2) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .cta-wrap h2 { position: relative; z-index: 1; font-size: clamp(40px, 5vw, 72px); letter-spacing: -2px; margin-bottom: 24px; }
+  .cta-wrap p { position: relative; z-index: 1; font-size: 18px; color: var(--muted); max-width: 500px; margin: 0 auto 48px; }
+  .cta-wrap .hero-actions { position: relative; z-index: 1; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1200px; margin: 0 auto;
+  }
+  footer p { font-size: 14px; color: var(--muted); }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .hero-content { padding: 100px 24px; }
+    .problem-grid, .personas, .pricing, .steps { grid-template-columns: 1fr; }
+    .solution-grid { grid-template-columns: 1fr; }
+    .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+    .testimonials { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Intel<span>Agent</span></div>
+  <div class="nav-links">
+    <a href="#problem">Problem</a>
+    <a href="#solution">Solution</a>
+    <a href="#personas">Who It's For</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <a href="#cta" class="nav-cta">Book a Call →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Now accepting clients — limited spots</div>
+    <h1>Your AI assistant<br>should <span class="highlight">know you.</span></h1>
+    <p class="hero-sub">Not a chatbot. Not ChatGPT. An autonomous agent that works while you sleep — remembers everything, monitors what matters, and reaches out when you need to act.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">Book a Discovery Call</a>
+      <a href="#solution" class="btn-secondary">See How It Works</a>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="section-label">The Problem</div>
+  <h2>AI is everywhere.<br>Useful AI is rare.</h2>
+  <p class="lead">Everyone has access to Claude, ChatGPT, and a dozen other models. Almost nobody has an AI that actually knows them, works proactively, and improves over time. The gap isn't the technology — it's the setup.</p>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-icon">🧠</div>
+      <h3>It forgets everything</h3>
+      <p>Every conversation starts from zero. Your AI doesn't know your portfolio, your patients, your goals, or what you discussed last week. You're constantly re-explaining yourself.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">😴</div>
+      <h3>It only works when you do</h3>
+      <p>You have to ask it everything. It never checks anything on its own. Proactive intelligence — the kind that texts you when your stop loss is about to trigger — doesn't exist out of the box.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">🎯</div>
+      <h3>Generic answers to specific problems</h3>
+      <p>It doesn't know your risk tolerance, your portfolio composition, your patients' histories, or your business metrics. So its answers are generic, hedged, and ultimately not that useful.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- COMPARISON -->
+<section id="comparison">
+  <div class="section-label">The Difference</div>
+  <h2>You've tried AI.<br>This is different.</h2>
+  <p class="lead">If you've used ChatGPT or Claude Desktop and thought "that's fine but not life-changing" — you've been using the wrong tool. Here's why.</p>
+
+  <div style="overflow-x: auto; margin-top: 48px;">
+    <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
+      <thead>
+        <tr>
+          <th style="padding: 16px 24px; text-align: left; color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); width: 34%;"></th>
+          <th style="padding: 16px 24px; text-align: center; color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); width: 33%;">ChatGPT / Claude Desktop</th>
+          <th style="padding: 16px 24px; text-align: center; font-weight: 700; font-size: 14px; border-bottom: 1px solid var(--accent); width: 33%; background: rgba(124,106,247,0.06); border-radius: 8px 8px 0 0; color: var(--accent2);">IntelAgent</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Remembers who you are</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ Starts from zero every session</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ Permanent memory of your life & decisions</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Works without you asking</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ Only responds when prompted</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ Monitors, alerts, and acts autonomously</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Runs while you sleep</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ Only active when you open the app</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ 24/7 background operation</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Sends you alerts</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ You go to it</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ It comes to you — Telegram, WhatsApp, iMessage</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Knows your specific situation</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ Generic answers for everyone</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ Configured around your portfolio, patients, or business</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Runs scheduled tasks</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ No automation capability</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ Price scans, morning briefs, weekly reports — automatic</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; color: var(--muted); font-weight: 500;">Gets smarter over time</td>
+          <td style="padding: 18px 24px; text-align: center; color: var(--red);">✗ Same experience forever</td>
+          <td style="padding: 18px 24px; text-align: center; color: var(--green); background: rgba(124,106,247,0.04); border-radius: 0 0 8px 0;">✓ Every interaction builds richer context</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- What it's not callout -->
+  <div style="margin-top: 48px; background: linear-gradient(135deg, rgba(124,106,247,0.08), rgba(56,189,248,0.05)); border: 1px solid rgba(124,106,247,0.2); border-radius: 20px; padding: 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
+    <div style="text-align: center;">
+      <div style="font-size: 32px; margin-bottom: 12px;">🚫</div>
+      <div style="font-weight: 700; margin-bottom: 8px; font-size: 16px;">It's not a chat interface</div>
+      <div style="color: var(--muted); font-size: 14px; line-height: 1.6;">You don't go to it. It comes to you. On the platform you already use, at the moment it matters.</div>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 32px; margin-bottom: 12px;">🚫</div>
+      <div style="font-weight: 700; margin-bottom: 8px; font-size: 16px;">It doesn't forget you tomorrow</div>
+      <div style="color: var(--muted); font-size: 14px; line-height: 1.6;">Every decision, preference, and conversation builds a permanent context that makes every future interaction smarter.</div>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 32px; margin-bottom: 12px;">🚫</div>
+      <div style="font-weight: 700; margin-bottom: 8px; font-size: 16px;">It doesn't wait to be asked</div>
+      <div style="color: var(--muted); font-size: 14px; line-height: 1.6;">It monitors your world 24/7 and reaches out when something needs your attention. You stay focused. It stays vigilant.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SOLUTION -->
+<div class="solution-wrap">
+  <div class="solution-inner">
+    <div class="solution-grid">
+      <div>
+        <div class="section-label" id="solution">The Solution</div>
+        <h2>An AI that's actually configured for your life.</h2>
+        <p class="lead" style="margin-bottom: 40px;">We build a fully personalized AI agent that knows who you are, works autonomously in the background, and gets smarter with every interaction.</p>
+
+        <div class="solution-features">
+          <div class="feature-item">
+            <div class="feature-icon">💾</div>
+            <div class="feature-text">
+              <h4>Persistent memory</h4>
+              <p>Your agent remembers decisions, preferences, context — everything. It picks up exactly where you left off, every session.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-text">
+              <h4>Proactive monitoring</h4>
+              <p>Scheduled checks, price alerts, news scans, calendar reminders — running automatically, 24/7, without you lifting a finger.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🎭</div>
+            <div class="feature-text">
+              <h4>Personality built around you</h4>
+              <p>Your agent has your communication style, your priorities, your tone preferences. It feels like talking to a brilliant colleague who knows you well.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📈</div>
+            <div class="feature-text">
+              <h4>Gets better over time</h4>
+              <p>Every interaction enriches the context. The agent you have in six months will be materially smarter than the one you start with.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <span class="terminal-title">Your Agent — Live</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-prompt">07:04 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+          <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+          <div><span class="t-alert">⚠ TSLA down 3.2%</span> <span class="t-output">— near stop $375</span></div>
+          <div><span class="t-output">📊 NVDA: hold. EMA50 reclaim</span></div>
+          <div><span class="t-output">   pending. No entry yet.</span></div>
+          <div><span class="t-output">📅 Board call at 2pm today.</span></div>
+          <div><span class="t-output">   3 items need prep.</span></div>
+          <div><span class="t-output">📰 Fed minutes released 2pm ET.</span></div>
+          <div><span class="t-output">   Watching DXY reaction.</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-prompt">09:31 AM ›</span> <span class="t-alert">PRICE ALERT</span></div>
+          <div><span class="t-value">TSLA $374.80</span> <span class="t-output">crossed warn level.</span></div>
+          <div><span class="t-output">Stop $354 still intact.</span></div>
+          <div><span class="t-output">Add zone $370 active if</span></div>
+          <div><span class="t-output">regime holds MIXED+.</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-prompt">You ›</span> <span class="t-cmd">Should I add here?</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-prompt">Agent ›</span> <span class="t-output">Not yet. QQQ still below</span></div>
+          <div><span class="t-output">EMA50. Wait for regime flip.</span></div>
+          <div><span class="t-success">Watching. I'll alert you.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="section-label">Process</div>
+  <h2>Live in 24 hours.</h2>
+  <p class="lead">Four steps from zero to a fully operational AI agent configured around your life.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h4>Intake Form</h4>
+      <p>Complete a structured questionnaire covering your profession, daily workflow, information needs, and goals. Takes 15 minutes.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h4>Discovery Call</h4>
+      <p>A 45-minute conversation to understand the nuance behind your answers and define exactly what your agent should do.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h4>We Build</h4>
+      <p>Your agent is configured: identity, memory architecture, automated monitors, alert crons, and communication style. Overnight.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h4>You Go Live</h4>
+      <p>Handoff call, walkthrough, and you're operational. Ongoing support and refinements included in all plans.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- USE CASES -->
+<section id="personas">
+  <div class="section-label">Who It's For</div>
+  <h2>Built for people who<br>make high-stakes decisions.</h2>
+  <p class="lead">IntelAgent is designed for professionals whose time is genuinely valuable and whose decisions genuinely matter.</p>
+
+  <div class="personas">
+    <div class="persona">
+      <div class="persona-icon">📈</div>
+      <h3>Traders & Investors</h3>
+      <p class="tagline">Never miss a setup. Never chase a move.</p>
+      <ul>
+        <li>Price alerts with context, not just numbers</li>
+        <li>Pre-market brief: news, levels, regime</li>
+        <li>Earnings calendar + whisper number alerts</li>
+        <li>Unusual options activity scanner</li>
+        <li>Portfolio stop monitoring 24/7</li>
+        <li>Weekly macro + technical report</li>
+      </ul>
+    </div>
+    <div class="persona">
+      <div class="persona-icon">🩺</div>
+      <h3>Physicians & Clinicians</h3>
+      <p class="tagline">Stay current without drowning in journals.</p>
+      <ul>
+        <li>Specialty-specific journal monitoring</li>
+        <li>Clinical trial result alerts (your criteria)</li>
+        <li>CME tracking and reminders</li>
+        <li>Patient follow-up prompts</li>
+        <li>Drug/treatment update scanner</li>
+        <li>Admin workflow automation</li>
+      </ul>
+    </div>
+    <div class="persona">
+      <div class="persona-icon">🏢</div>
+      <h3>Executives & Founders</h3>
+      <p class="tagline">Intelligence before every meeting.</p>
+      <ul>
+        <li>Competitor monitoring and alerts</li>
+        <li>Daily business metric brief</li>
+        <li>Board prep and investor update drafts</li>
+        <li>Regulatory and news tracking</li>
+        <li>Calendar intelligence and briefings</li>
+        <li>Email triage and priority flags</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- NUMBERS -->
+<section>
+  <div class="section-label">Why Now</div>
+  <h2>The window is open.<br>Not for long.</h2>
+  <p class="lead">We're at an inflection point where the technology is powerful enough to be genuinely useful but complex enough that most people can't unlock it themselves.</p>
+
+  <div class="numbers-wrap">
+    <div style="text-align: center;">
+      <div class="section-label">The Reality</div>
+      <h2 style="font-size: 36px;">What professionals actually experience</h2>
+    </div>
+    <div class="numbers-grid">
+      <div class="number-item">
+        <div class="number-value green">94%</div>
+        <div class="number-label">of professionals using AI say it doesn't truly understand their context</div>
+      </div>
+      <div class="number-item">
+        <div class="number-value accent">7hrs</div>
+        <div class="number-label">average time per week lost to tasks that could be automated</div>
+      </div>
+      <div class="number-item">
+        <div class="number-value blue">24h</div>
+        <div class="number-label">from intake form to a fully operational personalized AI agent</div>
+      </div>
+      <div class="number-item">
+        <div class="number-value gold">~99%</div>
+        <div class="number-label">of the hard work is done before you ever interact with your agent</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2>Simple, transparent,<br>no surprises.</h2>
+  <p class="lead">All plans include a discovery call, full build, and handoff. You own everything we create.</p>
+
+  <div class="pricing">
+    <div class="plan">
+      <div class="plan-name">Essentials</div>
+      <div class="plan-price">$500<span> one-time</span></div>
+      <p class="plan-desc">For professionals who want a solid personal AI foundation — memory, identity, and 2-3 core automated monitors.</p>
+      <ul class="plan-features">
+        <li>Intake form + discovery call</li>
+        <li>Full agent configuration</li>
+        <li>Memory & identity setup</li>
+        <li>2 automated monitors / crons</li>
+        <li>1 persona starter kit</li>
+        <li>Handoff walkthrough</li>
+        <li class="muted">Monthly maintenance</li>
+        <li class="muted">Ongoing refinements</li>
+      </ul>
+      <a href="#cta" class="plan-btn secondary">Get Started</a>
+    </div>
+
+    <div class="plan featured">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Professional</div>
+      <div class="plan-price">$800<span> + $200/mo</span></div>
+      <p class="plan-desc">The complete setup with ongoing support, refinements, and monthly maintenance to keep your agent sharp.</p>
+      <ul class="plan-features">
+        <li>Everything in Essentials</li>
+        <li>Up to 8 automated monitors</li>
+        <li>Full persona customization</li>
+        <li>Live data integrations</li>
+        <li>Monthly refinement session</li>
+        <li>Priority support</li>
+        <li>Quarterly memory consolidation</li>
+        <li>New crons as needs evolve</li>
+      </ul>
+      <a href="#cta" class="plan-btn primary">Book a Call →</a>
+    </div>
+
+    <div class="plan">
+      <div class="plan-name">Elite</div>
+      <div class="plan-price">$1,500<span> + $400/mo</span></div>
+      <p class="plan-desc">For complex use cases — traders, executives, or professionals with sophisticated multi-domain monitoring needs.</p>
+      <ul class="plan-features">
+        <li>Everything in Professional</li>
+        <li>Unlimited monitors & crons</li>
+        <li>Custom data integrations</li>
+        <li>Weekly check-in calls</li>
+        <li>Domain-specific intelligence</li>
+        <li>White-glove ongoing service</li>
+        <li>Agent evolves with your needs</li>
+        <li>Direct access, always</li>
+      </ul>
+      <a href="#cta" class="plan-btn secondary">Let's Talk</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="section-label">Early Clients</div>
+  <h2>What people say after<br>going live.</h2>
+
+  <div class="testimonials">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <q>I went from checking 6 different apps every morning to getting one message that tells me everything I need to know. The agent knows my portfolio, my risk tolerance, my stops. It's like having a trading partner who's always awake.</q>
+      <div class="testimonial-author">
+        <div class="author-avatar">M</div>
+        <div>
+          <div class="author-name">Michael R.</div>
+          <div class="author-title">Swing Trader, Vancouver</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <q>As a physician I don't have time to monitor journals. My agent scans everything and alerts me only when something genuinely changes clinical practice. In three months it's flagged two things I would have missed. That matters.</q>
+      <div class="testimonial-author">
+        <div class="author-avatar">S</div>
+        <div>
+          <div class="author-name">Dr. Sarah L.</div>
+          <div class="author-title">Cardiologist, Toronto</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <q>I was skeptical. I've tried every AI tool. This is different because it actually knows my business — our metrics, our competitors, what I care about. The morning brief alone saves me 90 minutes a day.</q>
+      <div class="testimonial-author">
+        <div class="author-avatar">J</div>
+        <div>
+          <div class="author-name">James T.</div>
+          <div class="author-title">Founder & CEO, Calgary</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<div class="cta-wrap" id="cta">
+  <div class="cta-glow"></div>
+  <div class="section-label">Get Started</div>
+  <h2>Your AI agent.<br><span class="highlight">Live in 24 hours.</span></h2>
+  <p>Limited spots available. Discovery calls are 45 minutes and completely free. No commitment required.</p>
+  <div class="hero-actions">
+    <a href="mailto:hello@intellagent.ai" class="btn-primary">Book Your Discovery Call</a>
+    <a href="#problem" class="btn-secondary">Learn More</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<hr class="divider">
+<footer>
+  <div class="logo">Intel<span>Agent</span></div>
+  <p>© 2026 IntelAgent. Built by humans. Powered by AI. Designed for professionals.</p>
+  <p style="color: var(--muted); font-size: 13px;">hello@intellagent.ai</p>
+</footer>
+
+</body>
+</html>
