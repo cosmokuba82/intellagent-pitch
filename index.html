@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IntelAgent — AI That Actually Knows You</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -190,10 +191,12 @@
   .feature-icon {
     width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
     background: rgba(124,106,247,0.12);
     border: 1px solid rgba(124,106,247,0.2);
   }
+  .feature-icon svg { width: 20px; height: 20px; stroke: var(--accent2); stroke-width: 1.8; fill: none; }
+  .problem-icon svg { width: 28px; height: 28px; stroke: var(--accent2); stroke-width: 1.6; fill: none; }
+  .persona-icon svg { width: 36px; height: 36px; stroke: var(--gold); stroke-width: 1.5; fill: none; }
   .feature-text h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
   .feature-text p { font-size: 15px; color: var(--muted); line-height: 1.6; }
 
@@ -417,17 +420,17 @@
 
   <div class="problem-grid">
     <div class="problem-card">
-      <div class="problem-icon">🧠</div>
+      <div class="problem-icon"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 9 9c0 3.18-1.65 5.97-4.13 7.59L16 21H8l-.87-2.41A9 9 0 0 1 12 2z"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/><path d="M9 9h.01M15 9h.01"/></svg></div>
       <h3>It forgets everything</h3>
       <p>Every conversation starts from zero. Your AI doesn't know your history, your priorities, your decisions, or what you discussed last week. You're constantly re-explaining yourself.</p>
     </div>
     <div class="problem-card">
-      <div class="problem-icon">😴</div>
+      <div class="problem-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <h3>It only works when you do</h3>
       <p>You have to ask it everything. It never checks anything on its own. Proactive intelligence — the kind that texts you when something important happens — doesn't exist out of the box.</p>
     </div>
     <div class="problem-card">
-      <div class="problem-icon">🎯</div>
+      <div class="problem-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
       <h3>Generic answers to specific problems</h3>
       <p>It doesn't know your situation, your constraints, your past decisions, or what actually matters to you. So its answers are generic, hedged, and ultimately not that useful.</p>
     </div>
@@ -524,28 +527,28 @@
 
         <div class="solution-features">
           <div class="feature-item">
-            <div class="feature-icon">💾</div>
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
             <div class="feature-text">
               <h4>Persistent memory</h4>
               <p>Your agent remembers decisions, preferences, context — everything. It picks up exactly where you left off, every session.</p>
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-icon">⚡</div>
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
             <div class="feature-text">
               <h4>Proactive monitoring</h4>
               <p>Scheduled checks, price alerts, news scans, calendar reminders — running automatically, 24/7, without you lifting a finger.</p>
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-icon">🎭</div>
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
             <div class="feature-text">
               <h4>Personality built around you</h4>
               <p>Your agent has your communication style, your priorities, your tone preferences. It feels like talking to a brilliant colleague who knows you well.</p>
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-icon">📈</div>
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
             <div class="feature-text">
               <h4>Gets better over time</h4>
               <p>Every interaction enriches the context. The agent you have in six months will be materially smarter than the one you start with.</p>
@@ -631,7 +634,7 @@
 
   <div class="personas">
     <div class="persona">
-      <div class="persona-icon">📈</div>
+      <div class="persona-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
       <h3>Traders & Investors</h3>
       <p class="tagline">Never miss a setup. Never chase a move.</p>
       <ul>
@@ -644,7 +647,7 @@
       </ul>
     </div>
     <div class="persona">
-      <div class="persona-icon">🩺</div>
+      <div class="persona-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
       <h3>Physicians & Clinicians</h3>
       <p class="tagline">Stay current without drowning in journals.</p>
       <ul>
@@ -657,7 +660,7 @@
       </ul>
     </div>
     <div class="persona">
-      <div class="persona-icon">🏢</div>
+      <div class="persona-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
       <h3>Executives & Founders</h3>
       <p class="tagline">Intelligence before every meeting.</p>
       <ul>
@@ -835,5 +838,6 @@
   <p style="color: var(--muted); font-size: 13px;">hello@intellagent.ai</p>
 </footer>
 
+<script>lucide.createIcons();</script>
 </body>
 </html>
