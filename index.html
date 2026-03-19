@@ -519,37 +519,142 @@
         </div>
       </div>
 
-      <div class="terminal">
-        <div class="terminal-bar">
-          <div class="dot dot-red"></div>
-          <div class="dot dot-yellow"></div>
-          <div class="dot dot-green"></div>
-          <span class="terminal-title">Your Agent — Live</span>
+      <!-- TABBED TERMINAL -->
+      <div>
+        <!-- Tab buttons -->
+        <div style="display: flex; gap: 0; margin-bottom: -1px; flex-wrap: wrap;">
+          <button onclick="showTab('trader')" id="tab-trader" class="demo-tab demo-tab-active">Trader</button>
+          <button onclick="showTab('lawyer')" id="tab-lawyer" class="demo-tab">Lawyer</button>
+          <button onclick="showTab('accountant')" id="tab-accountant" class="demo-tab">Accountant</button>
+          <button onclick="showTab('professor')" id="tab-professor" class="demo-tab">Professor</button>
+          <button onclick="showTab('parent')" id="tab-parent" class="demo-tab">Parent</button>
         </div>
-        <div class="terminal-body">
-          <div><span class="t-prompt">07:04 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
-          <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
-          <div><span class="t-alert">⚠ TSLA down 3.2%</span> <span class="t-output">— near stop $375</span></div>
-          <div><span class="t-output">📊 NVDA: hold. EMA50 reclaim</span></div>
-          <div><span class="t-output">   pending. No entry yet.</span></div>
-          <div><span class="t-output">📅 Board call at 2pm today.</span></div>
-          <div><span class="t-output">   3 items need prep.</span></div>
-          <div><span class="t-output">📰 Fed minutes released 2pm ET.</span></div>
-          <div><span class="t-output">   Watching DXY reaction.</span></div>
-          <div>&nbsp;</div>
-          <div><span class="t-prompt">09:31 AM ›</span> <span class="t-alert">PRICE ALERT</span></div>
-          <div><span class="t-value">TSLA $374.80</span> <span class="t-output">crossed warn level.</span></div>
-          <div><span class="t-output">Stop $354 still intact.</span></div>
-          <div><span class="t-output">Add zone $370 active if</span></div>
-          <div><span class="t-output">regime holds MIXED+.</span></div>
-          <div>&nbsp;</div>
-          <div><span class="t-prompt">You ›</span> <span class="t-cmd">Should I add here?</span></div>
-          <div>&nbsp;</div>
-          <div><span class="t-prompt">Agent ›</span> <span class="t-output">Not yet. QQQ still below</span></div>
-          <div><span class="t-output">EMA50. Wait for regime flip.</span></div>
-          <div><span class="t-success">Watching. I'll alert you.</span></div>
-        </div>
-      </div>
+
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span class="terminal-title" id="demo-title">Trader — Your Agent, Live</span>
+          </div>
+
+          <!-- TRADER -->
+          <div class="terminal-body" id="demo-trader">
+            <div><span class="t-prompt">07:04 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-alert">⚠ TSLA down 3.2%</span> <span class="t-output">— near your stop $375</span></div>
+            <div><span class="t-output">NVDA: hold. No entry yet.</span></div>
+            <div><span class="t-output">Fed minutes at 2pm ET.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">09:31 AM ›</span> <span class="t-alert">PRICE ALERT</span></div>
+            <div><span class="t-value">TSLA $374.80</span> <span class="t-output">— crossed warn level.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Should I add here?</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Not yet. Market still weak.</span></div>
+            <div><span class="t-success">Watching. I'll alert you.</span></div>
+          </div>
+
+          <!-- LAWYER -->
+          <div class="terminal-body" id="demo-lawyer" style="display:none;">
+            <div><span class="t-prompt">07:30 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-alert">DEADLINE TODAY</span> <span class="t-output">— Hernandez motion filing, 5pm</span></div>
+            <div><span class="t-output">3 client emails flagged urgent.</span></div>
+            <div><span class="t-output">Opposing counsel filed yesterday</span></div>
+            <div><span class="t-output">— summary waiting for you.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">10:15 AM ›</span> <span class="t-success">Case Law Alert</span></div>
+            <div><span class="t-output">New ruling in 9th Circuit matches</span></div>
+            <div><span class="t-output">your Hernandez argument. Flagged.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Summarise the new ruling.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Court held that warrantless</span></div>
+            <div><span class="t-output">digital searches require...</span></div>
+            <div><span class="t-success">Full brief sent to your email.</span></div>
+          </div>
+
+          <!-- ACCOUNTANT -->
+          <div class="terminal-body" id="demo-accountant" style="display:none;">
+            <div><span class="t-prompt">08:00 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-alert">TAX DEADLINE</span> <span class="t-output">— 4 client filings due this week</span></div>
+            <div><span class="t-output">CRA updated SR&ED guidelines</span></div>
+            <div><span class="t-output">overnight — affects 2 clients.</span></div>
+            <div><span class="t-output">Client Chen: docs still missing.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Draft a reminder to Chen.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Draft ready. Tone: professional,</span></div>
+            <div><span class="t-output">friendly. Mentions April 30th.</span></div>
+            <div><span class="t-success">Ready to send — confirm?</span></div>
+          </div>
+
+          <!-- PROFESSOR -->
+          <div class="terminal-body" id="demo-professor" style="display:none;">
+            <div><span class="t-prompt">07:45 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-output">Lecture at 10am — slides ready.</span></div>
+            <div><span class="t-alert">NEW PAPER</span> <span class="t-output">in Nature — matches your</span></div>
+            <div><span class="t-output">current research on neural plasticity.</span></div>
+            <div><span class="t-output">Grant deadline: 11 days out.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Summarise the Nature paper.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Key finding: synaptic pruning</span></div>
+            <div><span class="t-output">accelerates 3x in adolescence...</span></div>
+            <div><span class="t-success">Full summary + DOI sent to email.</span></div>
+          </div>
+
+          <!-- PARENT -->
+          <div class="terminal-body" id="demo-parent" style="display:none;">
+            <div><span class="t-prompt">07:00 AM ›</span> <span class="t-success">Good morning! Here's your day.</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-output">Emma: soccer practice at 4pm.</span></div>
+            <div><span class="t-output">Liam: dentist at 2:30pm.</span></div>
+            <div><span class="t-alert">LOW STOCK</span> <span class="t-output">— milk, eggs, bread.</span></div>
+            <div><span class="t-output">Weather: rain after 3pm.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">What should I make for dinner?</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">You have chicken + pasta.</span></div>
+            <div><span class="t-output">Liam had this Tuesday — try</span></div>
+            <div><span class="t-success">stir fry instead. Recipe sent.</span></div>
+          </div>
+
+        </div><!-- end terminal -->
+      </div><!-- end tabbed terminal -->
+
+      <style>
+        .demo-tab {
+          background: var(--surface2); color: var(--muted);
+          border: 1px solid var(--border); border-bottom: none;
+          padding: 10px 20px; font-size: 13px; font-weight: 500;
+          cursor: pointer; letter-spacing: 0.3px;
+          transition: all 0.15s; font-family: 'Inter', sans-serif;
+        }
+        .demo-tab:hover { color: var(--text); background: var(--surface); }
+        .demo-tab-active { background: #08080f !important; color: var(--gold) !important; border-color: var(--border2) !important; border-bottom-color: #08080f !important; }
+      </style>
+      <script>
+        function showTab(name) {
+          ['trader','lawyer','accountant','professor','parent'].forEach(function(t) {
+            document.getElementById('demo-' + t).style.display = 'none';
+            document.getElementById('tab-' + t).classList.remove('demo-tab-active');
+          });
+          document.getElementById('demo-' + name).style.display = 'block';
+          document.getElementById('tab-' + name).classList.add('demo-tab-active');
+          var titles = {
+            trader: 'Trader — Your Agent, Live',
+            lawyer: 'Lawyer — Your Agent, Live',
+            accountant: 'Accountant — Your Agent, Live',
+            professor: 'Professor — Your Agent, Live',
+            parent: 'Parent — Your Agent, Live'
+          };
+          document.getElementById('demo-title').textContent = titles[name];
+        }
+      </script>
     </div>
   </div>
 </div>
