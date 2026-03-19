@@ -527,6 +527,7 @@
           <button onclick="showTab('lawyer')" id="tab-lawyer" class="demo-tab">Lawyer</button>
           <button onclick="showTab('accountant')" id="tab-accountant" class="demo-tab">Accountant</button>
           <button onclick="showTab('professor')" id="tab-professor" class="demo-tab">Professor</button>
+          <button onclick="showTab('physician')" id="tab-physician" class="demo-tab">Physician</button>
           <button onclick="showTab('parent')" id="tab-parent" class="demo-tab">Parent</button>
         </div>
 
@@ -607,6 +608,25 @@
             <div><span class="t-success">Full summary + DOI sent to email.</span></div>
           </div>
 
+          <!-- PHYSICIAN -->
+          <div class="terminal-body" id="demo-physician" style="display:none;">
+            <div><span class="t-prompt">06:45 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-output">7 patients in clinic today.</span></div>
+            <div><span class="t-alert">FLAG</span> <span class="t-output">— Johnson (Rm 3): new labs</span></div>
+            <div><span class="t-output">show eGFR drop. Metformin dose</span></div>
+            <div><span class="t-output">may need review before you see them.</span></div>
+            <div><span class="t-output">Grand rounds at noon. Abstract due</span></div>
+            <div><span class="t-output">Friday — 3 days out.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Any new guidance on GLP-1 dosing?</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">ADA updated guidance Feb 2026.</span></div>
+            <div><span class="t-output">Tirzepatide now first-line for</span></div>
+            <div><span class="t-output">T2D with CVD risk. Summary sent.</span></div>
+            <div><span class="t-success">Relevant for 2 of today's patients.</span></div>
+          </div>
+
           <!-- PARENT -->
           <div class="terminal-body" id="demo-parent" style="display:none;">
             <div><span class="t-prompt">07:00 AM ›</span> <span class="t-success">Good morning! Here's your day.</span></div>
@@ -639,7 +659,7 @@
       </style>
       <script>
         function showTab(name) {
-          ['trader','lawyer','accountant','professor','parent'].forEach(function(t) {
+          ['trader','lawyer','accountant','professor','physician','parent'].forEach(function(t) {
             document.getElementById('demo-' + t).style.display = 'none';
             document.getElementById('tab-' + t).classList.remove('demo-tab-active');
           });
@@ -650,6 +670,7 @@
             lawyer: 'Lawyer — Your Agent, Live',
             accountant: 'Accountant — Your Agent, Live',
             professor: 'Professor — Your Agent, Live',
+            physician: 'Physician — Your Agent, Live',
             parent: 'Parent — Your Agent, Live'
           };
           document.getElementById('demo-title').textContent = titles[name];
