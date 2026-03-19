@@ -57,7 +57,7 @@
   .logo {
     font-family: 'Cormorant Garamond', serif;
     font-size: 22px; font-weight: 600; letter-spacing: 0.5px;
-    color: var(--text);
+    color: var(--text); display: flex; align-items: center; gap: 10px;
   }
   .logo span { color: var(--gold); }
   .nav-links { display: flex; gap: 40px; }
@@ -319,7 +319,7 @@
     display: flex; align-items: center; justify-content: space-between;
     max-width: 1200px; margin: 0 auto;
   }
-  .footer-logo {
+  .footer-logo { display: flex; align-items: center; gap: 8px;
     font-family: 'Cormorant Garamond', serif;
     font-size: 18px; font-weight: 500; color: var(--muted);
   }
@@ -347,7 +347,40 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo">Intel<span>Agent</span></div>
+  <div class="logo"><svg width="26" height="32" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+      <defs>
+        <linearGradient id="nhg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#1a0c00"/><stop offset="25%" stop-color="#8a5218"/>
+          <stop offset="50%" stop-color="#f0d060"/><stop offset="75%" stop-color="#8a5218"/>
+          <stop offset="100%" stop-color="#1a0c00"/>
+        </linearGradient>
+        <linearGradient id="nfg" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="#ffffff"/><stop offset="15%" stop-color="#ffe050"/>
+          <stop offset="40%" stop-color="#f07010"/><stop offset="70%" stop-color="#c02808"/>
+          <stop offset="100%" stop-color="#700808" stop-opacity="0.6"/>
+        </linearGradient>
+        <linearGradient id="nfc" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="#ffffff"/><stop offset="25%" stop-color="#fff8a0"/>
+          <stop offset="55%" stop-color="#f09020"/><stop offset="100%" stop-color="#901010" stop-opacity="0.7"/>
+        </linearGradient>
+        <filter id="nsg"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <path d="M26,54 L24,73 Q32,76 40,73 L38,54Z" fill="url(#nhg)"/>
+      <path d="M26,54 L24,73 Q26,74 28,73 L27,54Z" fill="#100700" opacity="0.5"/>
+      <path d="M38,54 L40,73 Q38,74 36,73 L37,54Z" fill="#100700" opacity="0.4"/>
+      <path d="M20,54 C20,51 24,49 26,49 L38,49 C40,49 44,51 44,54 C44,56 40,57 38,57 L26,57 C24,57 20,56 20,54Z" fill="url(#nhg)" opacity="0.95"/>
+      <line x1="20" y1="53" x2="44" y2="53" stroke="#f0d060" stroke-width="0.7" opacity="0.6"/>
+      <path d="M22,51 C18,44 14,36 14,27 C14,18 18,10 22,4 C24,1 26,-1 28,-2 C28.5,-3 29,-3 29,-3 C29.5,-3 30,-2 31,0 C33,4 35,9 36,15 C38,22 38,30 37,38 C36,44 34,48 42,51Z" fill="url(#nfg)" opacity="0.92"/>
+      <path d="M24,51 C21,44 18,36 18,27 C18,19 21,12 24,6 C25.5,3 27,1 28.5,-1 C29,-2 29,-3 29,-3 C29.3,-2 29.8,0 31,3 C33,8 34,16 34,25 C34,34 32,43 38,51Z" fill="url(#nfc)" opacity="0.88"/>
+      <path d="M27,51 C25,45 24,38 25,30 C26,22 28,14 30,6 C32,14 33,22 33,30 C33,38 31,45 35,51Z" fill="white" opacity="0.72"/>
+      <ellipse cx="31" cy="46" rx="5" ry="4" fill="white" opacity="0.65"/>
+      <circle cx="29.5" cy="-1" r="2.8" fill="white" opacity="0.98" filter="url(#nsg)"/>
+      <line x1="29.5" y1="-4.8" x2="29.5" y2="2.8" stroke="white" stroke-width="1.0" opacity="0.85"/>
+      <line x1="25.7" y1="-1" x2="33.3" y2="-1" stroke="white" stroke-width="1.0" opacity="0.85"/>
+      <circle cx="28" cy="20" r="1.4" fill="white" opacity="0.82" filter="url(#nsg)"/>
+      <line x1="28" y1="17.8" x2="28" y2="22.2" stroke="white" stroke-width="0.6" opacity="0.60"/>
+      <line x1="25.8" y1="20" x2="30.2" y2="20" stroke="white" stroke-width="0.6" opacity="0.60"/>
+    </svg>Intel<span>Agent</span></div>
   <div class="nav-links">
     <a href="#problem">Problem</a>
     <a href="#solution">Solution</a>
@@ -1100,7 +1133,40 @@
 <!-- FOOTER -->
 <hr class="divider">
 <footer>
-  <div class="footer-logo">Intel<span>Agent</span></div>
+  <div class="footer-logo"><svg width="20" height="25" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+      <defs>
+        <linearGradient id="nhg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#1a0c00"/><stop offset="25%" stop-color="#8a5218"/>
+          <stop offset="50%" stop-color="#f0d060"/><stop offset="75%" stop-color="#8a5218"/>
+          <stop offset="100%" stop-color="#1a0c00"/>
+        </linearGradient>
+        <linearGradient id="nfg" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="#ffffff"/><stop offset="15%" stop-color="#ffe050"/>
+          <stop offset="40%" stop-color="#f07010"/><stop offset="70%" stop-color="#c02808"/>
+          <stop offset="100%" stop-color="#700808" stop-opacity="0.6"/>
+        </linearGradient>
+        <linearGradient id="nfc" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="#ffffff"/><stop offset="25%" stop-color="#fff8a0"/>
+          <stop offset="55%" stop-color="#f09020"/><stop offset="100%" stop-color="#901010" stop-opacity="0.7"/>
+        </linearGradient>
+        <filter id="nsg"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <path d="M26,54 L24,73 Q32,76 40,73 L38,54Z" fill="url(#nhg)"/>
+      <path d="M26,54 L24,73 Q26,74 28,73 L27,54Z" fill="#100700" opacity="0.5"/>
+      <path d="M38,54 L40,73 Q38,74 36,73 L37,54Z" fill="#100700" opacity="0.4"/>
+      <path d="M20,54 C20,51 24,49 26,49 L38,49 C40,49 44,51 44,54 C44,56 40,57 38,57 L26,57 C24,57 20,56 20,54Z" fill="url(#nhg)" opacity="0.95"/>
+      <line x1="20" y1="53" x2="44" y2="53" stroke="#f0d060" stroke-width="0.7" opacity="0.6"/>
+      <path d="M22,51 C18,44 14,36 14,27 C14,18 18,10 22,4 C24,1 26,-1 28,-2 C28.5,-3 29,-3 29,-3 C29.5,-3 30,-2 31,0 C33,4 35,9 36,15 C38,22 38,30 37,38 C36,44 34,48 42,51Z" fill="url(#nfg)" opacity="0.92"/>
+      <path d="M24,51 C21,44 18,36 18,27 C18,19 21,12 24,6 C25.5,3 27,1 28.5,-1 C29,-2 29,-3 29,-3 C29.3,-2 29.8,0 31,3 C33,8 34,16 34,25 C34,34 32,43 38,51Z" fill="url(#nfc)" opacity="0.88"/>
+      <path d="M27,51 C25,45 24,38 25,30 C26,22 28,14 30,6 C32,14 33,22 33,30 C33,38 31,45 35,51Z" fill="white" opacity="0.72"/>
+      <ellipse cx="31" cy="46" rx="5" ry="4" fill="white" opacity="0.65"/>
+      <circle cx="29.5" cy="-1" r="2.8" fill="white" opacity="0.98" filter="url(#nsg)"/>
+      <line x1="29.5" y1="-4.8" x2="29.5" y2="2.8" stroke="white" stroke-width="1.0" opacity="0.85"/>
+      <line x1="25.7" y1="-1" x2="33.3" y2="-1" stroke="white" stroke-width="1.0" opacity="0.85"/>
+      <circle cx="28" cy="20" r="1.4" fill="white" opacity="0.82" filter="url(#nsg)"/>
+      <line x1="28" y1="17.8" x2="28" y2="22.2" stroke="white" stroke-width="0.6" opacity="0.60"/>
+      <line x1="25.8" y1="20" x2="30.2" y2="20" stroke="white" stroke-width="0.6" opacity="0.60"/>
+    </svg>Intel<span>Agent</span></div>
   <p>© 2026 IntelAgent. Designed for professionals who move fast.</p>
   <p>hello@intellagent.ai</p>
 </footer>
