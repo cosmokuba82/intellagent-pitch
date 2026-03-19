@@ -529,6 +529,9 @@
           <button onclick="showTab('professor')" id="tab-professor" class="demo-tab">Professor</button>
           <button onclick="showTab('physician')" id="tab-physician" class="demo-tab">Physician</button>
           <button onclick="showTab('parent')" id="tab-parent" class="demo-tab">Parent</button>
+          <button onclick="showTab('admin')" id="tab-admin" class="demo-tab">Executive</button>
+          <button onclick="showTab('athlete')" id="tab-athlete" class="demo-tab">Athlete</button>
+          <button onclick="showTab('researcher')" id="tab-researcher" class="demo-tab">Researcher</button>
         </div>
 
         <div class="terminal">
@@ -643,6 +646,60 @@
             <div><span class="t-success">stir fry instead. Recipe sent.</span></div>
           </div>
 
+          <!-- EXECUTIVE / ADMIN -->
+          <div class="terminal-body" id="demo-admin" style="display:none;">
+            <div><span class="t-prompt">07:00 AM ›</span> <span class="t-success">Executive Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-output">Board deck due Thursday. 2 slides</span></div>
+            <div><span class="t-output">still need Q1 actuals.</span></div>
+            <div><span class="t-alert">ACTION</span> <span class="t-output">— Finance hasn't responded.</span></div>
+            <div><span class="t-output">Draft follow-up ready for review.</span></div>
+            <div><span class="t-output">All-hands Monday — agenda not set.</span></div>
+            <div><span class="t-output">3 competitor moves this week flagged.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Summarise the competitor moves.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Stripe launched instant payouts</span></div>
+            <div><span class="t-output">in Canada. Shopify acquired a</span></div>
+            <div><span class="t-output">logistics startup. Full brief ready.</span></div>
+            <div><span class="t-success">Want a slide for the board deck?</span></div>
+          </div>
+
+          <!-- ATHLETE -->
+          <div class="terminal-body" id="demo-athlete" style="display:none;">
+            <div><span class="t-prompt">06:30 AM ›</span> <span class="t-success">Game Day Brief</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-output">HRV last night: 71 (↓9 from avg).</span></div>
+            <div><span class="t-alert">NOTE</span> <span class="t-output">— recovery score below threshold.</span></div>
+            <div><span class="t-output">Coach has flagged modified load today.</span></div>
+            <div><span class="t-output">Match vs. Seattle: 7pm. Travel at 2pm.</span></div>
+            <div><span class="t-output">Nutrition: pre-game window opens 3pm.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">What does the tape say on their #7?</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Strong left side. 73% of drives go</span></div>
+            <div><span class="t-output">left on third down. Weak backhand.</span></div>
+            <div><span class="t-success">Full scouting note sent to your phone.</span></div>
+          </div>
+
+          <!-- RESEARCHER -->
+          <div class="terminal-body" id="demo-researcher" style="display:none;">
+            <div><span class="t-prompt">08:15 AM ›</span> <span class="t-success">Research Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-alert">4 NEW PAPERS</span> <span class="t-output">matching your keywords</span></div>
+            <div><span class="t-output">overnight — 2 high relevance flagged.</span></div>
+            <div><span class="t-output">Grant deadline: 8 days. Word count</span></div>
+            <div><span class="t-output">1,240 / 5,000 — behind pace.</span></div>
+            <div><span class="t-output">Co-author Chen hasn't pushed since Tue.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">How does the Sharma paper affect our hypothesis?</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Sharma's n=42 is underpowered for</span></div>
+            <div><span class="t-output">your claim. Doesn't contradict —</span></div>
+            <div><span class="t-output">actually supports your mechanism.</span></div>
+            <div><span class="t-success">Suggested citation block ready.</span></div>
+          </div>
+
         </div><!-- end terminal -->
       </div><!-- end tabbed terminal -->
 
@@ -659,7 +716,7 @@
       </style>
       <script>
         function showTab(name) {
-          ['trader','lawyer','accountant','professor','physician','parent'].forEach(function(t) {
+          ['trader','lawyer','accountant','professor','physician','parent','admin','athlete','researcher'].forEach(function(t) {
             document.getElementById('demo-' + t).style.display = 'none';
             document.getElementById('tab-' + t).classList.remove('demo-tab-active');
           });
@@ -671,7 +728,10 @@
             accountant: 'Accountant — Your Agent, Live',
             professor: 'Professor — Your Agent, Live',
             physician: 'Physician — Your Agent, Live',
-            parent: 'Parent — Your Agent, Live'
+            parent: 'Parent — Your Agent, Live',
+            admin: 'Executive — Your Agent, Live',
+            athlete: 'Athlete — Your Agent, Live',
+            researcher: 'Researcher — Your Agent, Live'
           };
           document.getElementById('demo-title').textContent = titles[name];
         }
