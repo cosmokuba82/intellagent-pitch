@@ -340,6 +340,13 @@
     .numbers-grid { grid-template-columns: repeat(2, 1fr); }
     footer { flex-direction: column; gap: 16px; text-align: center; }
     .solution-inner { padding: 80px 24px; }
+    /* Dispatch table — scroll on mobile */
+    .dispatch-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    /* Landscape spectrum — stack vertically on mobile */
+    .landscape-spectrum { flex-direction: column; align-items: flex-start !important; gap: 8px !important; }
+    .landscape-spectrum .spectrum-connector { width: 1px; height: 16px; background: var(--border2); margin-left: 60px; }
+    .landscape-desc { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 20px !important; margin-top: 8px; }
+    .landscape-wrap { flex-direction: column !important; }
   }
 </style>
 </head>
@@ -468,7 +475,7 @@
         <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; line-height: 1.3; margin-bottom: 12px;">Dispatch is a great start.<br>IntelAgent is where it ends up.</h3>
         <p style="color: var(--muted); font-size: 15px; line-height: 1.7;">Anthropic launched Dispatch in March 2026 — a polished way to control your computer remotely via Claude. It's genuinely useful. But it's a single feature, not a system. No persistent memory. No custom monitoring. No integrations. No context that builds over months. It's the starter kit. IntelAgent is the professional tier.</p>
       </div>
-      <div style="flex: 1; min-width: 260px;">
+      <div class="dispatch-table-wrap" style="flex: 1; min-width: 260px;">
         <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
           <thead>
             <tr>
@@ -511,30 +518,30 @@
   </div>
 
   <!-- NemoClaw / landscape callout -->
-  <div style="margin-top: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border2); border-radius: 16px; padding: 32px 40px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap;">
+  <div class="landscape-wrap" style="margin-top: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border2); border-radius: 16px; padding: 32px 40px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap;">
     <div style="flex: 0 0 auto;">
-      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: 600; margin-bottom: 8px;">The Landscape — March 2026</div>
-      <div style="display: flex; align-items: center; gap: 0; font-size: 13px; font-weight: 500;">
-        <div style="background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 120px;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: 600; margin-bottom: 12px;">The Landscape — March 2026</div>
+      <div class="landscape-spectrum" style="display: flex; align-items: center; gap: 0; font-size: 13px; font-weight: 500;">
+        <div style="background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 110px;">
           <div style="color: var(--muted); font-size: 11px; margin-bottom: 4px;">TOO SIMPLE</div>
           <div style="color: var(--text);">Claude Dispatch</div>
           <div style="color: var(--muted); font-size: 11px; margin-top: 2px;">Consumer tasks</div>
         </div>
-        <div style="width: 24px; height: 1px; background: var(--border2); flex-shrink: 0;"></div>
-        <div style="background: linear-gradient(135deg, rgba(196,154,62,0.15), rgba(196,154,62,0.08)); border: 1px solid rgba(196,154,62,0.4); border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 130px; position: relative;">
+        <div class="spectrum-connector" style="width: 24px; height: 1px; background: var(--border2); flex-shrink: 0;"></div>
+        <div style="background: linear-gradient(135deg, rgba(196,154,62,0.15), rgba(196,154,62,0.08)); border: 1px solid rgba(196,154,62,0.4); border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 120px;">
           <div style="color: var(--accent); font-size: 11px; margin-bottom: 4px; font-weight: 700;">THE GAP</div>
           <div style="color: var(--accent2); font-weight: 700;">Intel<strong>Agent</strong></div>
           <div style="color: var(--muted); font-size: 11px; margin-top: 2px;">Personal professional</div>
         </div>
-        <div style="width: 24px; height: 1px; background: var(--border2); flex-shrink: 0;"></div>
-        <div style="background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 120px;">
+        <div class="spectrum-connector" style="width: 24px; height: 1px; background: var(--border2); flex-shrink: 0;"></div>
+        <div style="background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 110px;">
           <div style="color: var(--muted); font-size: 11px; margin-bottom: 4px;">TOO COMPLEX</div>
           <div style="color: var(--text);">NemoClaw</div>
           <div style="color: var(--muted); font-size: 11px; margin-top: 2px;">Enterprise IT</div>
         </div>
       </div>
     </div>
-    <div style="flex: 1; min-width: 220px; border-left: 1px solid var(--border); padding-left: 32px;">
+    <div class="landscape-desc" style="flex: 1; min-width: 220px; border-left: 1px solid var(--border); padding-left: 32px;">
       <p style="color: var(--muted); font-size: 14px; line-height: 1.7;">NVIDIA launched <strong style="color: var(--text);">NemoClaw</strong> at GTC 2026 — an enterprise agent stack requiring a DevOps team to deploy. Anthropic launched <strong style="color: var(--text);">Claude Dispatch</strong> for everyday remote tasks. <em style="color: var(--text);">Neither was built for the professional who needs a system configured around their specific life.</em> That's the gap IntelAgent was made to fill.</p>
     </div>
   </div>
