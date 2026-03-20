@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IntelAgent — Client Intake</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --darker:  #0c0a08;
+    --dark:    #111009;
+    --surface: #181511;
+    --surface2:#201d15;
+    --border:  rgba(255,240,200,0.07);
+    --border2: rgba(255,240,200,0.13);
+    --accent:  #c49a3e;
+    --accent2: #d4b05a;
+    --gold:    #c49a3e;
+    --text:    #f5f0e8;
+    --muted:   #b0a890;
+    --subtle:  #4a4228;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--darker);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(12,10,8,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 600; letter-spacing: 1px;
+    color: var(--text); text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-back {
+    font-size: 13px; color: var(--muted); text-decoration: none;
+    display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--text); }
+
+  /* HERO */
+  .intake-hero {
+    padding: 140px 24px 64px;
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .intake-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); font-weight: 600;
+    border: 1px solid rgba(196,154,62,0.25);
+    background: rgba(196,154,62,0.06);
+    border-radius: 100px; padding: 6px 16px; margin-bottom: 28px;
+  }
+  .intake-hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 60px);
+    font-weight: 600; line-height: 1.15; margin-bottom: 20px;
+  }
+  .intake-hero p {
+    font-size: 16px; color: var(--muted); line-height: 1.8;
+    margin-bottom: 12px;
+  }
+  .intake-time {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 8px; padding: 8px 16px; margin-top: 16px;
+  }
+
+  /* FORM CONTAINER */
+  .form-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px 120px;
+  }
+
+  /* SECTION HEADERS */
+  .form-section {
+    margin-bottom: 48px;
+  }
+  .section-tag {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 600; margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border2);
+  }
+
+  /* QUESTION BLOCKS */
+  .q {
+    margin-bottom: 32px;
+  }
+  .q label {
+    display: block;
+    font-size: 15px; font-weight: 500; color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .q label .q-num {
+    color: var(--accent); font-weight: 700; margin-right: 4px;
+  }
+  .q .q-hint {
+    display: block;
+    font-size: 13px; color: var(--muted); font-weight: 400;
+    margin-top: 2px; margin-bottom: 10px;
+  }
+
+  /* INPUTS */
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 15px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(196,154,62,0.1);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+  }
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b0a890' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+  select option { background: #1a1710; color: var(--text); }
+
+  /* CHECKBOX / RADIO GROUPS */
+  .check-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .check-group.inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .check-item input[type="checkbox"],
+  .check-item input[type="radio"] {
+    width: 18px; height: 18px;
+    appearance: none; -webkit-appearance: none;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .check-item input[type="radio"] { border-radius: 50%; }
+  .check-item input[type="checkbox"]:checked,
+  .check-item input[type="radio"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .check-item input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px; top: 2px;
+    width: 5px; height: 9px;
+    border: 2px solid #0c0a08;
+    border-top: none; border-left: none;
+    transform: rotate(45deg);
+  }
+  .check-item input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px; top: 4px;
+    width: 8px; height: 8px;
+    background: #0c0a08;
+    border-radius: 50%;
+  }
+  .check-item span {
+    font-size: 14px; color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .check-item:hover span { color: var(--text); }
+  .check-item input:checked + span { color: var(--text); }
+
+  /* PILL RADIO (for tone selector) */
+  .pill-group {
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .pill-group label {
+    display: flex; align-items: center;
+    padding: 9px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 100px;
+    font-size: 13px; color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 0;
+    font-weight: 400;
+  }
+  .pill-group input { display: none; }
+  .pill-group input:checked + label,
+  .pill-group label:has(input:checked) {
+    background: rgba(196,154,62,0.12);
+    border-color: var(--accent);
+    color: var(--accent2);
+  }
+  .pill-label {
+    cursor: pointer;
+    padding: 9px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 100px;
+    font-size: 13px; color: var(--muted);
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .pill-input { display: none; }
+  .pill-input:checked ~ .pill-label,
+  .pill-input:checked + .pill-label {
+    background: rgba(196,154,62,0.12);
+    border-color: var(--accent);
+    color: var(--accent2);
+  }
+
+  /* SUBMIT */
+  .submit-wrap {
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border2);
+    text-align: center;
+  }
+  .submit-wrap p {
+    font-size: 14px; color: var(--muted);
+    margin-bottom: 24px; line-height: 1.7;
+  }
+  .btn-submit {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--gold);
+    color: #0c0a08;
+    font-weight: 700; font-size: 15px;
+    padding: 16px 40px;
+    border-radius: 100px;
+    border: none; cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.3px;
+  }
+  .btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* SUCCESS STATE */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 64px 24px;
+  }
+  .success-msg h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px; font-weight: 600; margin-bottom: 16px;
+  }
+  .success-msg p { color: var(--muted); font-size: 16px; line-height: 1.7; }
+
+  /* REQUIRED ASTERISK */
+  .req { color: var(--accent); margin-left: 2px; }
+
+  /* DIVIDER */
+  .q-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 16px 20px; }
+    .intake-hero { padding: 110px 20px 48px; }
+    .check-group.inline { flex-direction: column; }
+    .pill-group { gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">Intel<span>Agent</span></a>
+  <a class="nav-back" href="index.html">← Back to site</a>
+</nav>
+
+<!-- HERO -->
+<div class="intake-hero">
+  <div class="intake-badge">Client Intake</div>
+  <h1>Tell us about<br><em>your world.</em></h1>
+  <p>Your answers shape your agent from day one. The more honest you are, the faster we can build something that actually fits your life.</p>
+  <p>Confidential. Used only to configure your personal AI.</p>
+  <div class="intake-time">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Takes about 10 minutes
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+  <form id="intakeForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+
+    <!-- Hidden metadata -->
+    <input type="hidden" name="_subject" value="New IntelAgent Intake Submission">
+    <input type="hidden" name="_next" value="">
+
+    <!-- ── SECTION 1: YOU ── -->
+    <div class="form-section">
+      <div class="section-tag">— Section 1</div>
+      <div class="section-title">About You</div>
+
+      <div class="q">
+        <label><span class="q-num">1.</span> Your first name <span class="req">*</span></label>
+        <input type="text" name="first_name" placeholder="e.g. Sarah" required>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">2.</span> What do you do for work? <span class="req">*</span></label>
+        <input type="text" name="profession" placeholder="e.g. Physician, Lawyer, Real estate investor, Founder..." required>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">3.</span> Your email — so we can follow up <span class="req">*</span></label>
+        <input type="email" name="email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">4.</span> How tech-comfortable are you?</label>
+        <select name="tech_comfort">
+          <option value="" disabled selected>Choose one</option>
+          <option value="basics">I use the basics — email, calendar, smartphone</option>
+          <option value="comfortable">Comfortable but not technical</option>
+          <option value="savvy">Fairly tech-savvy</option>
+          <option value="technical">Very technical / developer background</option>
+        </select>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">5.</span> What messaging app do you live in? <span class="req">*</span></label>
+        <div class="check-group inline">
+          <label class="check-item"><input type="radio" name="messaging_app" value="iMessage"><span>iMessage</span></label>
+          <label class="check-item"><input type="radio" name="messaging_app" value="Telegram"><span>Telegram</span></label>
+          <label class="check-item"><input type="radio" name="messaging_app" value="WhatsApp"><span>WhatsApp</span></label>
+          <label class="check-item"><input type="radio" name="messaging_app" value="Signal"><span>Signal</span></label>
+          <label class="check-item"><input type="radio" name="messaging_app" value="Other"><span>Other</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: YOUR DAY ── -->
+    <div class="form-section">
+      <div class="section-tag">— Section 2</div>
+      <div class="section-title">Your Day</div>
+
+      <div class="q">
+        <label><span class="q-num">6.</span> What's the first thing you check in the morning?</label>
+        <div class="check-group inline">
+          <label class="check-item"><input type="checkbox" name="morning_check" value="Email"><span>Email</span></label>
+          <label class="check-item"><input type="checkbox" name="morning_check" value="News"><span>News</span></label>
+          <label class="check-item"><input type="checkbox" name="morning_check" value="Calendar"><span>Calendar</span></label>
+          <label class="check-item"><input type="checkbox" name="morning_check" value="Markets"><span>Markets / portfolio</span></label>
+          <label class="check-item"><input type="checkbox" name="morning_check" value="Messages"><span>Messages</span></label>
+          <label class="check-item"><input type="checkbox" name="morning_check" value="Social"><span>Social media</span></label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">7.</span> What eats the most time in your day? <span class="req">*</span></label>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" name="time_drain" value="Email"><span>Email / inbox</span></label>
+          <label class="check-item"><input type="checkbox" name="time_drain" value="Scheduling"><span>Scheduling / calendar</span></label>
+          <label class="check-item"><input type="checkbox" name="time_drain" value="Research"><span>Research and reading</span></label>
+          <label class="check-item"><input type="checkbox" name="time_drain" value="Admin"><span>Repetitive admin tasks</span></label>
+          <label class="check-item"><input type="checkbox" name="time_drain" value="News"><span>Keeping up with industry news</span></label>
+          <label class="check-item"><input type="checkbox" name="time_drain" value="Markets"><span>Monitoring prices / markets</span></label>
+          <label class="check-item"><input type="checkbox" name="time_drain" value="Followups"><span>Following up on things</span></label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">8.</span> When do you most want your agent active?</label>
+        <div class="check-group inline">
+          <label class="check-item"><input type="checkbox" name="active_hours" value="Early morning"><span>Early morning (before 8am)</span></label>
+          <label class="check-item"><input type="checkbox" name="active_hours" value="Work hours"><span>Work hours (9–5)</span></label>
+          <label class="check-item"><input type="checkbox" name="active_hours" value="Evening"><span>Evening (5–10pm)</span></label>
+          <label class="check-item"><input type="checkbox" name="active_hours" value="Always"><span>Always — alert me when it matters</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: PAIN POINTS ── -->
+    <div class="form-section">
+      <div class="section-tag">— Section 3</div>
+      <div class="section-title">What's Not Working</div>
+
+      <div class="q">
+        <label><span class="q-num">9.</span> What falls through the cracks in your current life/work? <span class="req">*</span>
+          <span class="q-hint">Things you forget, miss, or wish you'd caught sooner.</span>
+        </label>
+        <textarea name="falls_through_cracks" placeholder="Be specific — the more detail, the better your agent will be..."></textarea>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">10.</span> What's the most repetitive thing you do that a smarter system should handle?</label>
+        <textarea name="repetitive_tasks" placeholder="e.g. 'I manually check my email every morning for anything urgent', 'I google the same kind of news every day'..."></textarea>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">11.</span> What frustrates you most about AI tools you've tried?</label>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" name="ai_frustration" value="No memory"><span>It doesn't remember anything between sessions</span></label>
+          <label class="check-item"><input type="checkbox" name="ai_frustration" value="Generic"><span>Generic answers — not specific to my situation</span></label>
+          <label class="check-item"><input type="checkbox" name="ai_frustration" value="Reactive"><span>I have to ask it everything — it never reaches out to me</span></label>
+          <label class="check-item"><input type="checkbox" name="ai_frustration" value="Not connected"><span>Not connected to my real data</span></label>
+          <label class="check-item"><input type="checkbox" name="ai_frustration" value="Never used"><span>I've never really used AI tools</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4: WHAT YOU WANT ── -->
+    <div class="form-section">
+      <div class="section-tag">— Section 4</div>
+      <div class="section-title">What You Want</div>
+
+      <div class="q">
+        <label><span class="q-num">12.</span> Describe your perfect morning in your own words. <span class="req">*</span>
+          <span class="q-hint">What would you want to know before you start your day?</span>
+        </label>
+        <textarea name="perfect_morning" placeholder="e.g. 'I'd want to know if anything urgent came in overnight, a quick market summary, and what's on my calendar today without having to open five apps...'"></textarea>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">13.</span> What would you automate if you had a magic wand?</label>
+        <textarea name="magic_wand" placeholder="Don't hold back. Even if it sounds impossible."></textarea>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">14.</span> What information do you want your agent to monitor? (check all that apply)</label>
+        <div class="check-group inline">
+          <label class="check-item"><input type="checkbox" name="monitor" value="Stocks/crypto"><span>Stock / crypto prices</span></label>
+          <label class="check-item"><input type="checkbox" name="monitor" value="Financial news"><span>Financial news</span></label>
+          <label class="check-item"><input type="checkbox" name="monitor" value="Industry news"><span>Industry news</span></label>
+          <label class="check-item"><input type="checkbox" name="monitor" value="Email"><span>My email</span></label>
+          <label class="check-item"><input type="checkbox" name="monitor" value="Calendar"><span>My calendar</span></label>
+          <label class="check-item"><input type="checkbox" name="monitor" value="Medical/science"><span>Medical / scientific research</span></label>
+          <label class="check-item"><input type="checkbox" name="monitor" value="Social"><span>Social media</span></label>
+          <label class="check-item"><input type="checkbox" name="monitor" value="Competitors"><span>Competitor / industry activity</span></label>
+          <label class="check-item"><input type="checkbox" name="monitor" value="Weather"><span>Weather</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 5: PERSONALITY ── -->
+    <div class="form-section">
+      <div class="section-tag">— Section 5</div>
+      <div class="section-title">How You Want It to Feel</div>
+
+      <div class="q">
+        <label><span class="q-num">15.</span> What tone do you want from your agent? <span class="req">*</span></label>
+        <div class="pill-group" id="tone-pills">
+          <label><input class="pill-input" type="radio" name="tone" value="Brief and direct"> <span class="pill-label">Brief &amp; direct</span></label>
+          <label><input class="pill-input" type="radio" name="tone" value="Conversational"> <span class="pill-label">Conversational</span></label>
+          <label><input class="pill-input" type="radio" name="tone" value="Formal and structured"> <span class="pill-label">Formal &amp; structured</span></label>
+          <label><input class="pill-input" type="radio" name="tone" value="Casual — be real with me"> <span class="pill-label">Casual — be real with me</span></label>
+          <label><input class="pill-input" type="radio" name="tone" value="Adaptive"> <span class="pill-label">Adaptive (brief for alerts, detailed when I ask)</span></label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">16.</span> What would make you think "this thing is incredible"?
+          <span class="q-hint">Your answer here will literally shape how we configure your agent.</span>
+        </label>
+        <textarea name="incredible_moment" placeholder="e.g. 'If it messaged me before I even realized I needed to know something'..."></textarea>
+      </div>
+
+      <div class="q">
+        <label><span class="q-num">17.</span> Is there anything your agent should never do?</label>
+        <textarea name="never_do" placeholder="e.g. 'Never send emails on my behalf', 'Never contact my clients', 'Don't post anything publicly'..." style="min-height: 80px;"></textarea>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-wrap">
+      <p>We'll review your answers before our call and come prepared.<br>
+      Expect a reply within <strong style="color: var(--text);">24 hours</strong> to schedule your build session.<br>
+      Your agent will be live within 24 hours of that call.</p>
+      <button type="submit" class="btn-submit">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Submit My Intake
+      </button>
+    </div>
+
+  </form>
+
+  <!-- SUCCESS STATE -->
+  <div class="success-msg" id="successMsg">
+    <div style="font-size: 48px; margin-bottom: 24px;">✦</div>
+    <h2>You're in.</h2>
+    <p>We've received your intake and will be in touch within 24 hours<br>to schedule your build session.<br><br>
+    <em style="color: var(--accent);">Your agent will be live within 24 hours of that call.</em></p>
+  </div>
+</div>
+
+<script>
+  // Pill radio visual state fix for Safari
+  document.querySelectorAll('.pill-input').forEach(input => {
+    input.addEventListener('change', () => {
+      document.querySelectorAll('.pill-input').forEach(i => {
+        i.closest('label').querySelector('.pill-label').style.background = '';
+        i.closest('label').querySelector('.pill-label').style.borderColor = '';
+        i.closest('label').querySelector('.pill-label').style.color = '';
+      });
+      if (input.checked) {
+        const lbl = input.closest('label').querySelector('.pill-label');
+        lbl.style.background = 'rgba(196,154,62,0.12)';
+        lbl.style.borderColor = '#c49a3e';
+        lbl.style.color = '#d4b05a';
+      }
+    });
+  });
+
+  // Form submission — Formspree AJAX
+  const form = document.getElementById('intakeForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('.btn-submit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const data = new FormData(form);
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        btn.textContent = 'Something went wrong — try again';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = 'Network error — try again';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
