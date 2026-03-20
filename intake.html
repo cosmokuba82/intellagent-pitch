@@ -351,7 +351,7 @@
 
     <!-- Hidden metadata -->
     <input type="hidden" name="_subject" value="New IntelAgent Intake Submission">
-    <input type="hidden" name="_next" value="">
+    <input type="hidden" name="_next" value="https://cosmokuba82.github.io/intellagent-pitch/intake.html?success=1">
 
     <!-- ── SECTION 1: YOU ── -->
     <div class="form-section">
@@ -568,12 +568,19 @@
     });
   });
 
-  // Form submission — Formspree AJAX
+  // Show success state if redirected back with ?success=1
+  if (window.location.search.includes('success=1')) {
+    document.getElementById('intakeForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Form submission — try AJAX first, fall back to native POST
   const form = document.getElementById('intakeForm');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = form.querySelector('.btn-submit');
-    btn.textContent = 'Sending…';
+    btn.innerHTML = 'Sending…';
     btn.disabled = true;
 
     try {
@@ -588,12 +595,12 @@
         document.getElementById('successMsg').style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        btn.textContent = 'Something went wrong — try again';
-        btn.disabled = false;
+        // Fall back to native form POST
+        form.submit();
       }
     } catch {
-      btn.textContent = 'Network error — try again';
-      btn.disabled = false;
+      // Network error — fall back to native POST
+      form.submit();
     }
   });
 </script>
