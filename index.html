@@ -330,6 +330,35 @@
   .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 
   /* ── RESPONSIVE ── */
+  /* ── MULTI-AGENT DIAGRAM ── */
+  .persona-btn {
+    background: var(--surface); border: 1px solid var(--border2);
+    color: var(--muted); font-size: 13px; font-weight: 500;
+    padding: 9px 20px; border-radius: 100px; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.2s;
+  }
+  .persona-btn:hover { color: var(--text); border-color: rgba(255,240,200,0.2); }
+  .persona-btn.active { background: rgba(196,154,62,0.1); border-color: rgba(196,154,62,0.4); color: var(--accent2); }
+  .agent-node {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 22px;
+    transition: border-color 0.2s;
+  }
+  .agent-node:hover { border-color: var(--border2); }
+  .agent-node-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .agent-node-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 4px; flex-shrink: 0; box-shadow: 0 0 6px rgba(196,154,62,0.5); }
+  .agent-node-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .agent-node-model { font-size: 11px; color: var(--accent); font-weight: 500; }
+  .agent-node-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+  .agent-node-example { background: var(--darker); border-radius: 8px; padding: 12px 14px; }
+  .msg-bubble { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .phone-msg { font-size: 12px; color: var(--muted); background: var(--surface); border-radius: 10px 10px 10px 2px; padding: 8px 12px; line-height: 1.5; max-width: 85%; }
+  .phone-msg.you { background: rgba(196,154,62,0.12); border: 1px solid rgba(196,154,62,0.15); color: var(--text); border-radius: 10px 10px 2px 10px; align-self: flex-end; margin-left: auto; }
+  @media (max-width: 900px) {
+    .multiagent-diagram { grid-template-columns: 1fr !important; }
+    .multiagent-diagram > div:nth-child(2) { display: none; }
+  }
+
   /* ── TIMELINE ── */
   .timeline { position: relative; padding-left: 140px; }
   .timeline-item { display: flex; align-items: flex-start; gap: 0; margin-bottom: 0; padding: 0 0 48px 0; position: relative; }
@@ -1284,6 +1313,106 @@
 
 <hr class="divider">
 
+<!-- MULTI AGENT EXAMPLE -->
+<section id="multi-agent-example" style="background: var(--darker);">
+  <div class="section-label">— Multi-Agent in Practice</div>
+  <h2>What it looks like<br>when agents work together.</h2>
+  <p class="lead" style="max-width: 600px;">One conversation. Three specialised agents running behind it — each doing what it does best, all feeding into a single interface you already use.</p>
+
+  <!-- Persona selector -->
+  <div style="display: flex; gap: 10px; margin-top: 40px; flex-wrap: wrap;" id="persona-selector">
+    <button class="persona-btn active" onclick="switchPersona('physician')" data-persona="physician">👩‍⚕️ Physician</button>
+    <button class="persona-btn" onclick="switchPersona('trader')" data-persona="trader">📈 Trader</button>
+    <button class="persona-btn" onclick="switchPersona('executive')" data-persona="executive">🏢 Executive</button>
+  </div>
+
+  <!-- Diagram -->
+  <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: center;" class="multiagent-diagram">
+
+    <!-- LEFT: Agent nodes -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+
+      <div class="agent-node" id="agent-node-1">
+        <div class="agent-node-header">
+          <div class="agent-node-dot"></div>
+          <div>
+            <div class="agent-node-name" id="an1-name">Research Agent</div>
+            <div class="agent-node-model" id="an1-model">Gemini 2.5 Pro</div>
+          </div>
+        </div>
+        <div class="agent-node-desc" id="an1-desc">Monitors medical journals, clinical trial feeds, and FDA approvals for your specialty. Surfaces only what's relevant.</div>
+        <div class="agent-node-example" id="an1-example">
+          <div class="msg-bubble incoming">📚 New Phase 3 result: GLP-1 agonist shows 34% T2D remission at 12mo — above primary endpoint. NEJM published 2h ago. Relevant to 6 patients on your panel.</div>
+        </div>
+      </div>
+
+      <div class="agent-node" id="agent-node-2">
+        <div class="agent-node-header">
+          <div class="agent-node-dot"></div>
+          <div>
+            <div class="agent-node-name" id="an2-name">Intelligence Agent</div>
+            <div class="agent-node-model" id="an2-model">Grok · Live Search</div>
+          </div>
+        </div>
+        <div class="agent-node-desc" id="an2-desc">Scans live news, regulatory announcements, and professional chatter in real time. No knowledge cutoff.</div>
+        <div class="agent-node-example" id="an2-example">
+          <div class="msg-bubble incoming">🚨 Health Canada advisory issued 45min ago: metformin lot recall (lot #MF2234). Check if any patients on recalled batch.</div>
+        </div>
+      </div>
+
+      <div class="agent-node" id="agent-node-3">
+        <div class="agent-node-header">
+          <div class="agent-node-dot"></div>
+          <div>
+            <div class="agent-node-name" id="an3-name">Monitor Agent</div>
+            <div class="agent-node-model" id="an3-model">Claude Haiku · Always On</div>
+          </div>
+        </div>
+        <div class="agent-node-desc" id="an3-desc">Handles schedule, CME credits, licensing deadlines, and routine admin — quietly, 24/7, without interrupting your day.</div>
+        <div class="agent-node-example" id="an3-example">
+          <div class="msg-bubble incoming">📅 CME deadline in 14 days. You have 8 of 40 credits. Two relevant online modules queued for you — both under 90 min.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CENTER: Arrow -->
+    <div style="display: flex; flex-direction: column; align-items: center; padding: 0 24px; gap: 8px;">
+      <div style="width: 1px; flex: 1; background: linear-gradient(to bottom, transparent, var(--border2) 20%, var(--border2) 80%, transparent);"></div>
+      <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(196,154,62,0.1); border: 1px solid rgba(196,154,62,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div style="width: 1px; flex: 1; background: linear-gradient(to bottom, transparent, var(--border2) 20%, var(--border2) 80%, transparent);"></div>
+    </div>
+
+    <!-- RIGHT: Unified output -->
+    <div style="background: var(--surface); border: 1px solid var(--border2); border-radius: 16px; padding: 28px 28px; height: 100%;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 6px;">You receive</div>
+      <div style="font-size: 14px; color: var(--muted); margin-bottom: 20px;">One clean Telegram conversation. No dashboards. No app switching.</div>
+
+      <!-- Phone mockup -->
+      <div style="background: #0a0808; border: 1px solid var(--border2); border-radius: 12px; padding: 16px; max-width: 280px; margin: 0 auto;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #1a1025, #2d1f3d); display: flex; align-items: center; justify-content: center; font-size: 14px;">🌌</div>
+          <div>
+            <div style="font-size: 13px; font-weight: 600; color: var(--text);" id="phone-name">Your IntelAgent</div>
+            <div style="font-size: 11px; color: var(--accent);">● Online</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;" id="phone-messages">
+          <div class="phone-msg">📚 New Phase 3 result flagged — GLP-1 agonist, NEJM. Relevant to your panel.</div>
+          <div class="phone-msg">🚨 Health Canada recall advisory — metformin lot #MF2234. Checking your patients now.</div>
+          <div class="phone-msg">📅 CME reminder: 14 days left, 8/40 credits. Two modules queued.</div>
+          <div class="phone-msg you">Thanks — can you pull the full NEJM abstract on the GLP-1 study?</div>
+          <div class="phone-msg">On it. Summary incoming in 30 seconds.</div>
+        </div>
+      </div>
+
+      <p style="font-size: 13px; color: var(--muted); margin-top: 16px; font-style: italic; text-align: center;">Three agents running. One conversation.</p>
+    </div>
+
+  </div>
+</section>
 
 <hr class="divider">
 
@@ -1873,6 +2002,51 @@
 
 <script>lucide.createIcons();</script>
 <script>
+const personaData = {
+  physician: {
+    agents: [
+      { name: 'Research Agent', model: 'Gemini 2.5 Pro', desc: 'Monitors medical journals, clinical trial feeds, and FDA approvals for your specialty. Surfaces only what\'s relevant.', msg: '📚 New Phase 3 result: GLP-1 agonist shows 34% T2D remission at 12mo — above primary endpoint. NEJM published 2h ago. Relevant to 6 patients on your panel.' },
+      { name: 'Intelligence Agent', model: 'Grok · Live Search', desc: 'Scans live news, regulatory announcements, and professional chatter in real time. No knowledge cutoff.', msg: '🚨 Health Canada advisory issued 45min ago: metformin lot recall (lot #MF2234). Check if any patients on recalled batch.' },
+      { name: 'Monitor Agent', model: 'Claude Haiku · Always On', desc: 'Handles schedule, CME credits, licensing deadlines, and routine admin — quietly, 24/7.', msg: '📅 CME deadline in 14 days. You have 8 of 40 credits. Two relevant online modules queued — both under 90 min.' }
+    ],
+    phone: ['📚 New Phase 3 result flagged — GLP-1 agonist, NEJM. Relevant to your panel.', '🚨 Health Canada recall advisory — metformin lot #MF2234. Checking your patients now.', '📅 CME reminder: 14 days left, 8/40 credits. Two modules queued.', 'you:Thanks — can you pull the full NEJM abstract on the GLP-1 study?', 'On it. Summary incoming in 30 seconds.']
+  },
+  trader: {
+    agents: [
+      { name: 'Market Intelligence Agent', model: 'Grok · Live Search', desc: 'Scans analyst notes, earnings reactions, options flow, and breaking macro events in real time.', msg: '📊 NVDA unusual call volume — 4.2× average on $140C Jan expiry. Bought in size 20min ago. Potential setup forming.' },
+      { name: 'Signal Agent', model: 'Claude Sonnet', desc: 'Runs technical analysis on your watchlist, monitors your stop levels, and generates structured GO/WAIT/NO-GO verdicts.', msg: '🟡 TSLA: EMA50 at $354 holding but RSI diverging bearish on 4h. WAIT — regime MIXED. Don\'t add until $375 reclaimed.' },
+      { name: 'Monitor Agent', model: 'Claude Haiku · Always On', desc: 'Watches price levels, earnings calendars, and Fed events 24/7. Fires alerts the moment your rules trigger.', msg: '⚡ MRVL crossed $83.50 warn level. Currently $83.72. Your rule: tighten stop to $81.50 at this level.' }
+    ],
+    phone: ['📊 NVDA unusual call flow — $140C Jan, 4.2× avg volume. Watching.', '🟡 TSLA WAIT signal — EMA50 at $354, regime MIXED. No add yet.', '⚡ MRVL warn level hit: $83.72. Stop tightened to $81.50.', 'you:What\'s the MRVL options IV doing right now?', 'IVR at 38 — just below elevated threshold. Spread entry viable if you want exposure.']
+  },
+  executive: {
+    agents: [
+      { name: 'Business Intelligence Agent', model: 'Grok · Live Search', desc: 'Monitors competitor activity, industry news, and market signals relevant to your sector in real time.', msg: '🏢 Competitor announced Series C ($45M) 1h ago. New product targets your Q3 segment. Full brief ready.' },
+      { name: 'Communications Agent', model: 'Claude Sonnet', desc: 'Triages your inbox, surfaces what needs action, drafts responses for review, and tracks follow-ups you assigned.', msg: '📧 3 emails need your response today. Board member asked for Q2 update by EOD — draft prepared for review.' },
+      { name: 'Monitor Agent', model: 'Claude Haiku · Always On', desc: 'Tracks KPIs, team milestones, and calendar conflicts. Sends daily operational pulse without you asking.', msg: '📊 Daily pulse: MRR +2.3% WoW. 2 team OKRs at risk for Q2. Sales pipeline down 11% vs last week — flagging.' }
+    ],
+    phone: ['🏢 Competitor Series C announced — $45M, targets your segment. Brief ready.', '📧 3 emails need action today. Board update draft prepared.', '📊 Daily pulse: MRR +2.3%, 2 OKRs at risk, pipeline -11% WoW.', 'you:Pull the competitor brief and send it before my 2pm.', 'Done. Sent to your inbox + summarised in 4 bullet points below.']
+  }
+};
+
+function switchPersona(persona) {
+  document.querySelectorAll('.persona-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-persona="${persona}"]`).classList.add('active');
+  const d = personaData[persona];
+  d.agents.forEach((a, i) => {
+    const n = i + 1;
+    document.getElementById(`an${n}-name`).textContent = a.name;
+    document.getElementById(`an${n}-model`).textContent = a.model;
+    document.getElementById(`an${n}-desc`).textContent = a.desc;
+    document.getElementById(`an${n}-example`).innerHTML = `<div class="msg-bubble incoming">${a.msg}</div>`;
+  });
+  const msgs = document.getElementById('phone-messages');
+  msgs.innerHTML = d.phone.map(m => {
+    if (m.startsWith('you:')) return `<div class="phone-msg you">${m.slice(4)}</div>`;
+    return `<div class="phone-msg">${m}</div>`;
+  }).join('');
+}
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
