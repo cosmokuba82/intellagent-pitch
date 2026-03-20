@@ -330,6 +330,30 @@
   .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 
   /* ── RESPONSIVE ── */
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 140px; }
+  .timeline-item { display: flex; align-items: flex-start; gap: 0; margin-bottom: 0; padding: 0 0 48px 0; position: relative; }
+  .timeline-time { position: absolute; left: -140px; width: 110px; text-align: right; font-size: 13px; color: var(--muted); font-weight: 500; padding-top: 20px; font-variant-numeric: tabular-nums; }
+  .timeline-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--border2); border: 2px solid var(--accent); position: absolute; left: -6px; top: 22px; flex-shrink: 0; z-index: 1; }
+  .timeline-dot.alert { background: rgba(248,113,113,0.3); border-color: #f87171; box-shadow: 0 0 8px rgba(248,113,113,0.4); }
+  .timeline-dot.green { background: rgba(74,222,128,0.3); border-color: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.4); }
+  .timeline-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-left: 24px; flex: 1; }
+  .timeline-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+  .timeline-tag.alert { color: #f87171; }
+  .timeline-tag.success { color: #4ade80; }
+  .timeline-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
+  .timeline-body { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* ── FAQ ── */
+  .faq-item { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; margin-bottom: 8px; }
+  .faq-item:hover { border-color: var(--border2); }
+  .faq-item.open { border-color: rgba(196,154,62,0.3); }
+  .faq-q { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; font-size: 15px; font-weight: 500; color: var(--text); gap: 16px; }
+  .faq-icon { color: var(--accent); font-size: 20px; font-weight: 300; flex-shrink: 0; transition: transform 0.2s; line-height: 1; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a { display: none; padding: 0 24px 20px; font-size: 14px; color: var(--muted); line-height: 1.8; border-top: 1px solid var(--border); padding-top: 16px; }
+  .faq-item.open .faq-a { display: block; }
+
   /* ── AGENT ROSTER ── */
   .roster-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0; }
   .roster-tab {
@@ -372,6 +396,13 @@
     .roster-body { grid-template-columns: 1fr; gap: 24px; }
     .roster-panel { padding: 24px 20px; border-radius: 0 0 12px 12px; }
     .roster-tab { font-size: 12px; padding: 8px 12px; }
+    .timeline { padding-left: 0; }
+    .timeline-line { display: none !important; }
+    .timeline-time { position: static; width: auto; text-align: left; padding: 0 0 4px 0; font-size: 12px; color: var(--accent); }
+    .timeline-item { flex-direction: column; padding-bottom: 24px; }
+    .timeline-dot { display: none; }
+    .timeline-card { margin-left: 0; margin-top: 8px; }
+    .privacy-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
     .solution-grid { grid-template-columns: 1fr; }
     .numbers-grid { grid-template-columns: repeat(2, 1fr); }
     footer { flex-direction: column; gap: 16px; text-align: center; }
@@ -395,8 +426,10 @@
     <a href="#problem">Problem</a>
     <a href="#solution">Solution</a>
     <a href="#personas">Who It's For</a>
+    <a href="#day-in-life">A Day in the Life</a>
     <a href="#right-tool">Why Multi-Agent</a>
     <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
   </div>
   <a href="intake.html" class="nav-cta">Book a Call →</a>
 </nav>
@@ -1375,11 +1408,147 @@
 
 <hr class="divider">
 
+<!-- DAY IN THE LIFE -->
+<section id="day-in-life">
+  <div class="section-label">— A Day in the Life</div>
+  <h2>What your day looks like<br><em>after</em> your agent is built.</h2>
+  <p class="lead" style="max-width: 580px;">You don't go to it. It comes to you — at exactly the right moment, with exactly what you need.</p>
+
+  <div style="margin-top: 64px; position: relative;">
+    <!-- Timeline line -->
+    <div style="position: absolute; left: 120px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, var(--border2) 5%, var(--border2) 95%, transparent); display: block;" class="timeline-line"></div>
+
+    <div style="display: flex; flex-direction: column; gap: 0;" class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-time">6:47 AM</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-tag">Morning Brief</div>
+          <div class="timeline-title">Your agent sends your daily brief before you're out of bed.</div>
+          <div class="timeline-body">Overnight macro developments, your portfolio performance, what's on your calendar, and three things to watch today. All in one Telegram message. No apps to open.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">9:14 AM</div>
+        <div class="timeline-dot alert"></div>
+        <div class="timeline-card">
+          <div class="timeline-tag alert">Price Alert</div>
+          <div class="timeline-title">TSLA hits your watch level. You're notified instantly.</div>
+          <div class="timeline-body">"TSLA crossed $354 — your stop level. EMA50 breached on volume. Your rule: no action in thin pre-market, wait for regular hours open." It knows your rules. It applies them for you.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">11:30 AM</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-tag">Research</div>
+          <div class="timeline-title">You ask a complex question. It answers with full context.</div>
+          <div class="timeline-body">"Should I add to my MRVL position here?" It pulls your cost basis, current stop, the earnings beat from last week, analyst sentiment, and the macro regime — then gives you a structured GO / WAIT / NO-GO with reasoning. In 8 seconds.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">2:45 PM</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-tag">Intelligence</div>
+          <div class="timeline-title">Post-market summary arrives before you've even closed your laptop.</div>
+          <div class="timeline-body">Social sentiment scan, analyst alerts, notable options flow on your watchlist, and a one-line verdict on the day. Pulled from X, financial feeds, and your portfolio — synthesised by Grok and Claude in parallel.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">10:00 PM</div>
+        <div class="timeline-dot green"></div>
+        <div class="timeline-card">
+          <div class="timeline-tag success">Nothing to do</div>
+          <div class="timeline-title">The system handled it. You didn't have to.</div>
+          <div class="timeline-body">No tabs open. No newsletters unread. No prices checked. Everything that needed attention got flagged. Everything that didn't was filtered. You were just... living your life.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRIVACY -->
+<section id="privacy" style="background: var(--surface);">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;" class="privacy-grid">
+    <div>
+      <div class="section-label">— Your Data</div>
+      <h2>Your agent runs on<br>your machine.</h2>
+      <p style="font-size: 17px; color: var(--muted); line-height: 1.9; margin-bottom: 28px;">Every memory file, every configuration, every personal detail your agent knows — lives on your device. Not in our cloud. Not on anyone else's servers.</p>
+      <p style="font-size: 17px; color: var(--muted); line-height: 1.9;">We configure the system. You own it. We never see your data after handoff — and we never need to.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border: 1px solid var(--border); border-radius: 14px;">
+        <div style="width: 40px; height: 40px; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px;">Local-first architecture</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Your agent runs on your Mac or PC. Memory files, cron jobs, and configurations are stored locally — never uploaded to a third-party service.</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border: 1px solid var(--border); border-radius: 14px;">
+        <div style="width: 40px; height: 40px; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div>
+          <div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px;">You own everything we build</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Every file, script, and configuration is yours. Cancel anytime and keep it all — your agent doesn't stop working when you do.</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border: 1px solid var(--border); border-radius: 14px;">
+        <div style="width: 40px; height: 40px; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div>
+          <div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px;">HIPAA-conscious by design</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">For healthcare professionals — no patient data ever touches the agent. Your agent knows <em>you</em>, not your patients. Configuration stays within your professional boundaries.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- PRICING -->
 <section id="pricing">
   <div class="section-label">— Pricing</div>
   <h2>Simple, transparent,<br>no surprises.</h2>
   <p class="lead">All plans include a discovery call, full build, and handoff. You own everything we create.</p>
+
+  <!-- ROI -->
+  <div style="margin: 48px 0; padding: 36px 48px; background: var(--surface); border: 1px solid var(--border2); border-radius: 16px; display: flex; align-items: center; gap: 56px; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 200px;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 10px;">The ROI Framing</div>
+      <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; line-height: 1.4;">Your time is worth more<br>than the subscription.</h3>
+    </div>
+    <div style="flex: 2; min-width: 280px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; text-align: center;">
+      <div>
+        <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px;">Hours saved per week</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; color: var(--accent2); line-height: 1;">5 hrs</div>
+        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">conservative estimate</div>
+      </div>
+      <div>
+        <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px;">Value at $150/hr</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; color: var(--accent2); line-height: 1;">$3K</div>
+        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">recovered per month</div>
+      </div>
+      <div>
+        <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px;">IntelAgent Pro cost</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; color: var(--green); line-height: 1;">$200</div>
+        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">per month retainer</div>
+      </div>
+    </div>
+  </div>
 
   <div class="pricing">
     <div class="plan">
@@ -1572,6 +1741,58 @@
 
 <hr class="divider">
 
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-label">— FAQ</div>
+  <h2>Questions we hear<br>before every first call.</h2>
+
+  <div style="margin-top: 56px; display: flex; flex-direction: column; gap: 2px; max-width: 800px;" id="faqList">
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Do I need to be technical to use this? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Not at all. You interact with your agent exactly like texting a smart assistant — through Telegram, WhatsApp, or iMessage. No apps to install, no dashboards to learn. We handle everything technical during setup, and the agent handles the rest.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">I already use ChatGPT. How is this different? <span class="faq-icon">+</span></div>
+      <div class="faq-a">ChatGPT starts fresh every conversation — it has no memory of who you are, what you've told it, or what matters to you. IntelAgent builds a persistent memory of your life, your rules, and your context over months. It also runs proactively in the background without you asking — monitoring, alerting, and briefing you. ChatGPT waits. Your IntelAgent acts.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What happens to my data? Is it private? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Your agent runs on your own machine. Every memory file, configuration, and personal detail lives locally on your device — never uploaded to our servers. We configure your system during setup and never need access to your data afterward. You own everything we build, permanently.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">How long does setup actually take? <span class="faq-icon">+</span></div>
+      <div class="faq-a">The intake form takes about 10 minutes. The discovery call is 30–45 minutes. After that, your agent is typically live within 24 hours. Most clients are having their first real conversation with their agent by the next morning.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I cancel the monthly retainer? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes, anytime. No contracts, no penalties. And critically — your agent doesn't stop working when you cancel. Everything we built is yours: the files, the scripts, the configurations. The retainer covers ongoing maintenance and improvements, not access to your own system.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What if my needs change over time? <span class="faq-icon">+</span></div>
+      <div class="faq-a">That's exactly what the monthly retainer is for. As your life evolves — new job, new investments, new priorities — your agent evolves with it. We add monitors, update your memory, build new automations. The system gets more useful over time, not less.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">I'm a doctor. What about patient privacy? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Your agent is configured around you as a professional — your schedule, your CME tracking, your research interests, your workflow. It never touches patient data, and we specifically configure it to keep that boundary clean. Many of our clients are physicians, and privacy constraints are built into the setup from day one.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What does "24 hours to live" actually mean? <span class="faq-icon">+</span></div>
+      <div class="faq-a">After your discovery call, we build your agent's full configuration — memory files, identity, automated monitors, Telegram integration — and hand it off with a walkthrough session. Most clients have a working, personalised agent sending them their first morning brief the next day.</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- CTA -->
 <div class="cta-wrap" id="cta">
   <div class="cta-glow"></div>
@@ -1595,6 +1816,9 @@
 
 <script>lucide.createIcons();</script>
 <script>
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
 function switchTab(id) {
   document.querySelectorAll('.roster-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.roster-panel').forEach(p => p.classList.remove('active'));
