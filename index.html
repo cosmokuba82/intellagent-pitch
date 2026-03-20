@@ -335,7 +335,8 @@
     .nav-links { display: none; }
     section { padding: 80px 24px; }
     .hero-content { padding: 100px 24px; }
-    .problem-grid, .personas, .pricing, .steps, .testimonials, .build-grid { grid-template-columns: 1fr; }
+    .problem-grid, .personas, .pricing, .steps, .testimonials, .build-grid { grid-template-columns: 1fr; gap: 20px !important; }
+    .build-grid > div { margin-bottom: 4px; }
     .solution-grid { grid-template-columns: 1fr; }
     .numbers-grid { grid-template-columns: repeat(2, 1fr); }
     footer { flex-direction: column; gap: 16px; text-align: center; }
@@ -577,7 +578,7 @@
   <h2>Not a chatbot.<br>A permanent intelligence layer.</h2>
   <p class="lead" style="max-width: 640px;">Most AI tools wait for you to open them. What IntelAgent builds reaches out to you — because it's been watching your world while you weren't.</p>
 
-  <div style="margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;" class="build-grid">
+  <div style="margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;" class="build-grid">
 
     <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 36px 32px;">
       <div style="width: 44px; height: 44px; background: rgba(196,154,62,0.1); border: 1px solid rgba(196,154,62,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 20px;">🧠</div>
