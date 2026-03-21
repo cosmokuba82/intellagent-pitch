@@ -432,6 +432,7 @@
     .timeline-dot { display: none; }
     .timeline-card { margin-left: 0; margin-top: 8px; }
     .privacy-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+    .stack-grid { grid-template-columns: 1fr !important; }
     .solution-grid { grid-template-columns: 1fr; }
     .numbers-grid { grid-template-columns: repeat(2, 1fr); }
     footer { flex-direction: column; gap: 16px; text-align: center; }
@@ -457,6 +458,7 @@
     <a href="#personas">Who It's For</a>
     <a href="#day-in-life">A Day in the Life</a>
     <a href="#right-tool">Why Multi-Agent</a>
+    <a href="#standard-stack">What You Get</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
   </div>
@@ -1718,6 +1720,126 @@
 
 <hr class="divider">
 
+
+<hr class="divider">
+
+<!-- STANDARD STACK -->
+<section id="standard-stack" style="background: var(--surface);">
+  <div class="section-label">— What Every Client Gets</div>
+  <h2>The IntelAgent Standard Stack.</h2>
+  <p class="lead" style="max-width: 680px;">Before we touch anything specific to your life, every client receives the same battle-tested foundation — built from months of running a real agent in production and solving every failure mode the hard way.</p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 48px;" class="stack-grid">
+
+    <!-- Layer 1 -->
+    <div style="background: var(--darker); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
+        <div style="width: 36px; height: 36px; background: rgba(196,154,62,0.12); border: 1px solid rgba(196,154,62,0.3); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">🛡️</div>
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); font-weight: 600;">Layer 1</div>
+          <div style="font-size: 16px; font-weight: 700; color: var(--text);">Resilience</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Auto-restart watchdog</span> — independent daemon monitors your agent every 5 minutes, restarts it automatically if it crashes, and texts you if intervention is needed</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Daily GitHub backup</span> — every script, memory file, and configuration automatically committed to a private repository</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Recovery guide PDF</span> — step-by-step revival instructions for a new machine, delivered to your inbox on setup day</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Platform-agnostic design</span> — every script works independently of any single AI provider. Model swap takes one command.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 2 -->
+    <div style="background: var(--darker); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
+        <div style="width: 36px; height: 36px; background: rgba(196,154,62,0.12); border: 1px solid rgba(196,154,62,0.3); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">🧠</div>
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); font-weight: 600;">Layer 2</div>
+          <div style="font-size: 16px; font-weight: 700; color: var(--text);">Memory Architecture</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Long-term memory</span> — MEMORY.md as the curated knowledge base about you; daily logs as raw context; both updated automatically</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Identity files</span> — SOUL.md (who your agent is), USER.md (who you are), AGENTS.md (operating rules). Your agent wakes up knowing you.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Weekly memory consolidation</span> — agent reviews daily logs, distills key learnings into long-term memory automatically every Sunday</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 3 -->
+    <div style="background: var(--darker); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
+        <div style="width: 36px; height: 36px; background: rgba(196,154,62,0.12); border: 1px solid rgba(196,154,62,0.3); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">📡</div>
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); font-weight: 600;">Layer 3</div>
+          <div style="font-size: 16px; font-weight: 700; color: var(--text);">Proactive Intelligence</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Morning brief</span> — daily digest delivered to your phone before you need it: relevant news, calendar flags, domain-specific alerts</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Domain monitors</span> — custom watchlists for whatever matters to you: professional news, competitor moves, regulatory changes, price alerts</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Weekly systems audit</span> — every Monday at 2am the agent checks itself, fixes what's broken, and reports. You never babysit it.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 4 -->
+    <div style="background: var(--darker); border: 1px solid rgba(196,154,62,0.3); border-radius: 16px; padding: 28px 32px; position: relative; overflow: hidden;">
+      <div style="position: absolute; top: 0; right: 0; background: var(--accent); color: #000; font-size: 10px; font-weight: 700; padding: 4px 12px; border-bottom-left-radius: 10px; letter-spacing: 0.5px; text-transform: uppercase;">Your Layer</div>
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
+        <div style="width: 36px; height: 36px; background: rgba(196,154,62,0.2); border: 1px solid rgba(196,154,62,0.5); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">⚡</div>
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); font-weight: 600;">Layer 4</div>
+          <div style="font-size: 16px; font-weight: 700; color: var(--text);">Domain-Specific Configuration</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">Built around your work</span> — chart completion, consult letters, patient scheduling templates for physicians; deal tracking, research summaries for lawyers; portfolio monitoring for investors</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: var(--accent); font-size: 12px; margin-top: 2px; flex-shrink: 0;">✦</span>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;"><span style="color: var(--text); font-weight: 500;">This is where the real work happens</span> — layers 1-3 are standard. Layer 4 is why you hired us.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 32px; padding: 20px 28px; background: rgba(196,154,62,0.04); border: 1px solid rgba(196,154,62,0.15); border-radius: 12px; max-width: 720px;">
+    <div style="font-size: 13px; color: var(--muted); line-height: 1.8;">
+      <span style="color: var(--text); font-weight: 600;">The difference from DIY:</span> A new OpenClaw user discovers these failure modes over 6–12 months. You get the solved version on day one — because we've already run into every wall and fixed it.
+    </div>
+  </div>
+</section>
 
 <hr class="divider">
 
