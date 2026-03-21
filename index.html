@@ -460,6 +460,7 @@
     <a href="#saturday-morning">Real Output</a>
     <a href="#right-tool">Why Multi-Agent</a>
     <a href="#standard-stack">What You Get</a>
+    <a href="#setup">Setup</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
   </div>
@@ -1971,6 +1972,79 @@
 <hr class="divider">
 
 <!-- WHY ME -->
+<section id="setup" style="background: var(--darker);">
+  <div class="section-label">— Setup Experience</div>
+  <h2>Your agent, running<br><em>in under 5 minutes.</em></h2>
+  <p class="lead" style="max-width: 600px;">Most people who try to self-configure an AI agent spend hours fighting a setup wizard. With IntelAgent, your entire workspace arrives pre-built. You paste two lines. You're done.</p>
+
+  <!-- Terminal -->
+  <div style="margin-top: 56px; max-width: 720px; margin-left: auto; margin-right: auto;">
+    <div style="background: #0d1117; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.5);">
+      <!-- Title bar -->
+      <div style="background: #161b22; padding: 12px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #30363d;">
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f57;"></div>
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #febc2e;"></div>
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #28c840;"></div>
+        <span style="margin-left: 12px; font-size: 12px; color: #8b949e; font-family: monospace;">Terminal</span>
+      </div>
+      <!-- Code -->
+      <div style="padding: 28px 32px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; line-height: 2;">
+        <div style="color: #8b949e; margin-bottom: 4px; font-size: 12px;"># Step 1 — Install OpenClaw (one-time)</div>
+        <div><span style="color: #58a6ff;">$</span> <span style="color: #e6edf3;">curl -fsSL https://openclaw.ai/install.sh | bash</span></div>
+        <div style="margin-top: 20px; color: #8b949e; font-size: 12px;"># Step 2 — Deploy your pre-built IntelAgent workspace</div>
+        <div><span style="color: #58a6ff;">$</span> <span style="color: #e6edf3;">openclaw workspace apply </span><span style="color: #c49a3e;">https://theintelagent.ai/setup/</span><span style="color: #f8c672; font-style: italic;">YOUR_ID</span></div>
+        <div style="margin-top: 24px; color: #3fb950;">✓ Memory loaded &nbsp;&nbsp; ✓ Crons scheduled &nbsp;&nbsp; ✓ Channels connected</div>
+        <div style="color: #3fb950;">✓ Agent persona configured &nbsp;&nbsp; ✓ Ready.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- What gets deployed -->
+  <div style="margin-top: 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; max-width: 860px; margin-left: auto; margin-right: auto;">
+
+    <div style="background: var(--surface); border: 1px solid var(--border2); border-radius: 12px; padding: 20px 24px; display: flex; gap: 14px; align-items: flex-start;">
+      <svg style="flex-shrink:0; margin-top:2px;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c49a3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14"/></svg>
+      <div>
+        <div style="font-weight: 700; color: var(--text); font-size: 14px; margin-bottom: 4px;">Memory architecture</div>
+        <div style="font-size: 13px; color: var(--muted); line-height: 1.5;">SOUL.md, USER.md, MEMORY.md — your agent already knows who it is and who it's helping.</div>
+      </div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--border2); border-radius: 12px; padding: 20px 24px; display: flex; gap: 14px; align-items: flex-start;">
+      <svg style="flex-shrink:0; margin-top:2px;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c49a3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <div>
+        <div style="font-weight: 700; color: var(--text); font-size: 14px; margin-bottom: 4px;">Scheduled crons</div>
+        <div style="font-size: 13px; color: var(--muted); line-height: 1.5;">Morning briefs, price alerts, weekly reports — all pre-scheduled and firing from day one.</div>
+      </div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--border2); border-radius: 12px; padding: 20px 24px; display: flex; gap: 14px; align-items: flex-start;">
+      <svg style="flex-shrink:0; margin-top:2px;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c49a3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div>
+        <div style="font-weight: 700; color: var(--text); font-size: 14px; margin-bottom: 4px;">Channel connected</div>
+        <div style="font-size: 13px; color: var(--muted); line-height: 1.5;">Telegram, iMessage, or WhatsApp — your preferred channel, configured and ready.</div>
+      </div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--border2); border-radius: 12px; padding: 20px 24px; display: flex; gap: 14px; align-items: flex-start;">
+      <svg style="flex-shrink:0; margin-top:2px;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c49a3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div>
+        <div style="font-weight: 700; color: var(--text); font-size: 14px; margin-bottom: 4px;">Your domain baked in</div>
+        <div style="font-size: 13px; color: var(--muted); line-height: 1.5;">Watchlists, workflows, tone preferences, priorities — everything we learned in your intake call.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Contrast line -->
+  <div style="margin-top: 56px; max-width: 680px; margin-left: auto; margin-right: auto; text-align: center;">
+    <p style="color: var(--muted); font-size: 15px; line-height: 1.7;">The DIY path takes most people 4–8 hours of setup, trial, and error — if they finish at all. <span style="color: var(--text); font-weight: 600;">IntelAgent clients are live in under 5 minutes.</span> The difference is 6 months of accumulated configuration, delivered in two lines.</p>
+  </div>
+
+</section>
+
+<hr class="divider">
+
 <section id="founder">
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;">
 
