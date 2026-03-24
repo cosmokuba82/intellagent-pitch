@@ -10,99 +10,120 @@
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --darker:  #0c0a08;
-    --dark:    #0f0d0a;
-    --accent:  #c49a3e;
-    --text:    #f0ebe0;
-    --muted:   rgba(240,235,224,0.5);
-    --border:  rgba(196,154,62,0.15);
+    --bg:     #0a0806;
+    --accent: #c49a3e;
+    --text:   #f2ece0;
+    --muted:  rgba(242,236,224,0.45);
   }
 
-  html, body {
-    min-height: 100%;
-    background: var(--darker);
+  html {
+    background: var(--bg);
     color: var(--text);
     font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
 
-  /* Ambient background */
-  .bg {
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(196,154,62,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(196,154,62,0.04) 0%, transparent 60%),
-      radial-gradient(ellipse 30% 30% at 80% 60%, rgba(196,154,62,0.03) 0%, transparent 60%);
-    pointer-events: none;
-  }
-
-  /* Stars */
-  .stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: rgba(196,154,62,0.6);
-    border-radius: 50%;
-    animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.2; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.4); }
-  }
-
-  /* Main container */
-  .container {
-    position: relative;
-    z-index: 10;
-    height: 100vh;
+  body {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px 24px;
-    text-align: center;
+    padding: 48px 24px 80px;
+    position: relative;
+    overflow-x: hidden;
   }
 
-  /* Logo mark */
-  .logo-mark {
-    width: 48px;
-    height: 48px;
+  /* Glow */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(196,154,62,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Stars canvas */
+  #stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Content wrapper */
+  .wrap {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 740px;
+    width: 100%;
+  }
+
+  /* Eyebrow */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: up 0.7s ease forwards 0.1s;
+  }
+  .eyebrow-line {
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+
+  /* Brand name */
+  .brand {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 10vw, 96px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--text);
     margin-bottom: 32px;
     opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.2s;
+    animation: up 0.8s ease forwards 0.25s;
   }
 
-  /* Name */
-  .name {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(36px, 6vw, 64px);
-    font-weight: 800;
-    letter-spacing: -0.01em;
-    text-transform: none;
-    color: var(--text);
-    margin-bottom: 28px;
+  /* Divider */
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.4;
+    margin-bottom: 32px;
     opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.4s;
+    animation: fade 0.6s ease forwards 0.5s;
   }
 
   /* Headline */
   .headline {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(38px, 7vw, 82px);
-    font-weight: 600;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    max-width: 820px;
-    margin-bottom: 28px;
+    font-size: clamp(26px, 4.5vw, 48px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 20px;
     opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.6s;
+    animation: up 0.8s ease forwards 0.4s;
   }
   .headline em {
     font-style: italic;
@@ -110,202 +131,208 @@
   }
 
   /* Subline */
-  .subline {
-    font-size: clamp(15px, 2vw, 18px);
+  .sub {
+    font-size: clamp(14px, 1.8vw, 17px);
     font-weight: 300;
+    line-height: 1.75;
     color: var(--muted);
-    max-width: 520px;
-    line-height: 1.7;
+    max-width: 480px;
     margin-bottom: 48px;
     opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.8s;
+    animation: up 0.8s ease forwards 0.55s;
   }
 
-  /* Proof strip */
-  .proof {
+  /* Proof pills */
+  .pills {
     display: flex;
-    gap: 32px;
-    margin-bottom: 52px;
     flex-wrap: wrap;
+    gap: 10px;
     justify-content: center;
+    margin-bottom: 48px;
     opacity: 0;
-    animation: fadeUp 0.8s ease forwards 1.0s;
+    animation: up 0.8s ease forwards 0.7s;
   }
-  .proof-item {
+  .pill {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 13px;
+    gap: 6px;
+    font-size: 12.5px;
     color: var(--muted);
+    background: rgba(196,154,62,0.06);
+    border: 1px solid rgba(196,154,62,0.15);
+    border-radius: 100px;
+    padding: 6px 14px;
   }
-  .proof-dot {
-    width: 6px;
-    height: 6px;
+  .pill-dot {
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: var(--accent);
-    opacity: 0.7;
     flex-shrink: 0;
   }
 
-  /* CTA Button */
-  .cta-wrap {
+  /* CTA */
+  .cta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
     opacity: 0;
-    animation: fadeUp 0.8s ease forwards 1.2s;
+    animation: up 0.8s ease forwards 0.85s;
   }
-  .cta {
+  .btn {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     background: var(--accent);
-    color: #0c0a08;
+    color: #0a0806;
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     font-weight: 600;
-    letter-spacing: 0.3px;
-    padding: 16px 36px;
+    padding: 15px 36px;
     border-radius: 100px;
     text-decoration: none;
-    transition: all 0.2s ease;
-    border: none;
-    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   }
-  .cta:hover {
-    background: #d4a94e;
+  .btn:hover {
+    background: #d4aa4e;
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(196,154,62,0.3);
+    box-shadow: 0 16px 48px rgba(196,154,62,0.25);
   }
-  .cta svg {
-    transition: transform 0.2s ease;
-  }
-  .cta:hover svg {
-    transform: translateX(3px);
-  }
+  .btn svg { transition: transform 0.2s; }
+  .btn:hover svg { transform: translateX(4px); }
 
-  /* Secondary link */
-  .secondary {
-    margin-top: 20px;
-    margin-bottom: 60px;
+  .link {
     font-size: 13px;
     color: var(--muted);
-    opacity: 0;
-    animation: fadeUp 0.6s ease forwards 1.5s;
-  }
-  .secondary a {
-    color: var(--muted);
     text-decoration: none;
-    border-bottom: 1px solid rgba(240,235,224,0.2);
-    transition: color 0.2s;
+    border-bottom: 1px solid rgba(242,236,224,0.18);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
   }
-  .secondary a:hover { color: var(--text); }
+  .link:hover { color: var(--text); border-color: rgba(242,236,224,0.4); }
 
-  /* Bottom tagline */
-  .bottom {
+  /* Footer */
+  footer {
     position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: center;
     font-size: 11px;
-    color: rgba(240,235,224,0.18);
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
-    white-space: nowrap;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 2s;
+    color: rgba(242,236,224,0.15);
+    z-index: 10;
     pointer-events: none;
+    opacity: 0;
+    animation: fade 1s ease forwards 1.6s;
   }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
+  @keyframes up {
+    from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  @keyframes fadeIn {
+  @keyframes fade {
     from { opacity: 0; }
     to   { opacity: 1; }
   }
 
-  @media (max-width: 600px) {
-    .proof { gap: 16px; }
-    .proof-item { font-size: 12px; }
-    .cta { padding: 14px 28px; font-size: 14px; }
+  @media (max-width: 480px) {
+    body { padding: 40px 20px 72px; }
+    .pills { gap: 8px; }
+    .btn { font-size: 14px; padding: 14px 28px; }
   }
 </style>
 </head>
 <body>
 
-<div class="bg"></div>
+<canvas id="stars"></canvas>
 
-<!-- Stars -->
-<div class="stars" id="stars"></div>
+<div class="wrap">
 
-<div class="container">
-
-  <!-- Torch mark SVG -->
-  <svg class="logo-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M24 8 C22 12 20 14 19 17 C18 20 19 23 21 24 C20 22 21 20 23 19 C22 21 22 23 24 25 C26 23 26 21 25 19 C27 20 28 22 27 24 C29 23 30 20 29 17 C28 14 26 12 24 8Z" fill="#c49a3e" opacity="0.9"/>
-    <path d="M24 8 C23 10 22 11 22 13 C22 15 23 17 24 18 C25 17 26 15 26 13 C26 11 25 10 24 8Z" fill="white" opacity="0.8"/>
-    <!-- Handle -->
-    <rect x="21.5" y="25" width="5" height="14" rx="2" fill="#c49a3e" opacity="0.7"/>
-    <rect x="20" y="37" width="8" height="2" rx="1" fill="#c49a3e" opacity="0.5"/>
-    <!-- Stars -->
-    <circle cx="14" cy="12" r="1" fill="#c49a3e" opacity="0.6"/>
-    <circle cx="34" cy="10" r="0.8" fill="#c49a3e" opacity="0.5"/>
-    <circle cx="38" cy="20" r="0.6" fill="#c49a3e" opacity="0.4"/>
-    <circle cx="10" cy="22" r="0.7" fill="#c49a3e" opacity="0.4"/>
-  </svg>
-
-  <div class="name">IntelAgent</div>
-
-  <h1 class="headline">
-    Your AI.<br>
-    <em>Configured for your life.</em><br>
-    Running before you wake up.
-  </h1>
-
-  <p class="subline">
-    Not another chatbot. A system that knows your work, your priorities, and your world — and acts on them, day and night.
-  </p>
-
-  <div class="proof">
-    <div class="proof-item"><span class="proof-dot"></span>Morning briefs at 7am</div>
-    <div class="proof-item"><span class="proof-dot"></span>Alerts while you sleep</div>
-    <div class="proof-item"><span class="proof-dot"></span>Memory that compounds</div>
-    <div class="proof-item"><span class="proof-dot"></span>Setup in under 5 minutes</div>
+  <div class="eyebrow">
+    <span class="eyebrow-line"></span>
+    AI Agent Services
+    <span class="eyebrow-line"></span>
   </div>
 
-  <div class="cta-wrap">
-    <a href="pitch.html" class="cta">
+  <div class="brand">IntelAgent</div>
+
+  <div class="divider"></div>
+
+  <h1 class="headline">
+    Your AI — <em>configured for your life</em>,<br>
+    running before you wake up.
+  </h1>
+
+  <p class="sub">
+    Not another chatbot you have to ask. A system that knows your work, monitors what matters, and reaches out to you — day and night.
+  </p>
+
+  <div class="pills">
+    <div class="pill"><span class="pill-dot"></span>Morning briefs at 7am</div>
+    <div class="pill"><span class="pill-dot"></span>Alerts while you sleep</div>
+    <div class="pill"><span class="pill-dot"></span>Memory that compounds</div>
+    <div class="pill"><span class="pill-dot"></span>Setup in under 5 minutes</div>
+  </div>
+
+  <div class="cta-group">
+    <a href="pitch.html" class="btn">
       See how it works
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
         <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
-  </div>
-
-  <div class="secondary">
-    Ready to start? <a href="pitch.html#contact">Talk to us →</a>
+    <a href="pitch.html#contact" class="link">Ready to start? Talk to us →</a>
   </div>
 
 </div>
 
-<div class="bottom">Built on OpenClaw · Powered by Claude, Grok & GPT-4o</div>
+<footer>Built on OpenClaw &nbsp;·&nbsp; Claude · Grok · GPT-4o</footer>
 
 <script>
-  // Generate stars
-  const container = document.getElementById('stars');
-  for (let i = 0; i < 80; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    star.style.cssText = `
-      left: ${Math.random() * 100}%;
-      top: ${Math.random() * 100}%;
-      --d: ${2 + Math.random() * 4}s;
-      --delay: ${Math.random() * 4}s;
-      opacity: ${0.1 + Math.random() * 0.4};
-      width: ${1 + Math.random() * 2}px;
-      height: ${1 + Math.random() * 2}px;
-    `;
-    container.appendChild(star);
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
+
+  function init() {
+    stars = [];
+    for (let i = 0; i < 120; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.3,
+        a: Math.random(),
+        speed: Math.random() * 0.008 + 0.002,
+        offset: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      const alpha = (Math.sin(t * s.speed + s.offset) + 1) / 2 * 0.7 * s.a;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(196,154,62,${alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  init();
+  window.addEventListener('resize', () => { resize(); init(); });
+  requestAnimationFrame(draw);
 </script>
 
 </body>
