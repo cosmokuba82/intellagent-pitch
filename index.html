@@ -3,208 +3,1954 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IntelAgent</title>
+<title>IntelAgent — AI That Actually Knows You</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@300;400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap');
 
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html, body {
-    width: 100%;
-    min-height: 100vh;
-    background: #090806;
+  :root {
+    --darker:  #0c0a08;
+    --dark:    #111009;
+    --surface: #181511;
+    --surface2:#201d15;
+    --border:  rgba(255,240,200,0.07);
+    --border2: rgba(255,240,200,0.13);
+    --accent:  #c49a3e;
+    --accent2: #d4b05a;
+    --gold:    #c49a3e;
+    --gold2:   #e8c96a;
+    --green:   #4ade80;
+    --red:     #f87171;
+    --text:    #f5f0e8;
+    --muted:   #b0a890;
+    --subtle:  #4a4228;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
     font-family: 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
+    background: var(--darker);
+    color: var(--text);
+    line-height: 1.6;
     overflow-x: hidden;
-  }
-
-  /* Particle canvas */
-  canvas {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  /* Subtle center glow */
-  .glow {
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px;
-    height: 400px;
-    background: radial-gradient(ellipse, rgba(196,154,62,0.055) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Main layout */
-  main {
-    position: relative;
-    z-index: 10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 32px;
-    text-align: center;
-  }
-
-  /* Brand */
-  .brand {
-    font-family: 'Manrope', sans-serif;
-    font-size: clamp(56px, 11vw, 108px);
-    font-weight: 800;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-    padding-bottom: 6px;
-    margin-bottom: 20px;
-    opacity: 0;
-    animation: rise 1s cubic-bezier(0.22,1,0.36,1) forwards 0.1s;
-  }
-  .brand .w { color: #f2ece0; }
-  .brand .g { color: #c49a3e; }
-
-  /* Gold line under brand */
-  .rule {
-    width: 36px;
-    height: 1px;
-    background: #c49a3e;
-    opacity: 0.35;
-    margin: 0 auto 40px;
-    opacity: 0;
-    animation: fade 0.8s ease forwards 0.6s;
   }
 
-  /* Taglines */
-  .lines {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 64px;
-    opacity: 0;
-    animation: rise 0.9s cubic-bezier(0.22,1,0.36,1) forwards 0.5s;
+  /* ── SERIF HEADINGS ── */
+  h1, h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 600;
   }
-  .line {
-    font-size: clamp(15px, 2.2vw, 20px);
-    font-weight: 300;
-    letter-spacing: 0.01em;
-    color: rgba(242,236,224,0.5);
-  }
-  .line.accent { color: rgba(196,154,62,0.75); }
 
-  /* CTA */
-  .enter {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(242,236,224,0.35);
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 22px 72px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(8,8,16,0.9);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 600; letter-spacing: 0.5px;
+    color: var(--text);
+  }
+  .logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 40px; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 13px; font-weight: 400; letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.4);
+    padding: 10px 28px;
+    font-size: 14px; font-weight: 500; letter-spacing: 0.5px;
     text-decoration: none;
-    border-bottom: 1px solid rgba(242,236,224,0.12);
-    padding-bottom: 3px;
-    transition: color 0.3s, border-color 0.3s;
-    opacity: 0;
-    animation: fade 1s ease forwards 1.1s;
+    transition: background 0.2s, border-color 0.2s;
   }
-  .enter:hover {
-    color: rgba(196,154,62,0.9);
-    border-color: rgba(196,154,62,0.4);
-  }
-  .enter svg { transition: transform 0.3s; }
-  .enter:hover svg { transform: translateX(5px); }
+  .nav-cta:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
 
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
+  /* ── SECTIONS ── */
+  section { padding: 140px 72px; max-width: 1200px; margin: 0 auto; }
+
+  /* ── HERO ── */
+  .hero-wrap {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; padding: 0; max-width: 100%;
   }
-  @keyframes fade {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  .hero-glow {
+    position: absolute; width: 900px; height: 900px;
+    background: radial-gradient(circle, rgba(139,124,248,0.07) 0%, transparent 65%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%);
+    top: 25%; right: 15%; pointer-events: none;
+  }
+  .hero-content {
+    text-align: center; max-width: 860px;
+    padding: 140px 72px; position: relative; z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 8px 20px;
+    font-size: 14px; font-weight: 400; letter-spacing: 1.5px;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+  h1 {
+    font-size: clamp(52px, 7vw, 96px);
+    line-height: 1.0; letter-spacing: -1px;
+    margin-bottom: 32px; font-weight: 500;
+  }
+  h1 .highlight { color: var(--gold); }
+  .hero-sub {
+    font-size: 18px; color: var(--muted);
+    max-width: 540px; margin: 0 auto 36px;
+    font-weight: 400; line-height: 1.8; letter-spacing: 0.2px;
+  }
+  .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 36px; }
+  .btn-primary {
+    background: var(--gold);
+    color: #0c0c16;
+    padding: 16px 40px;
+    font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    padding: 16px 40px;
+    font-size: 14px; font-weight: 400; letter-spacing: 0.5px;
+    text-decoration: none;
+    border: 1px solid var(--border2);
+    transition: border-color 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.25); }
+
+  /* ── TYPOGRAPHY ── */
+  .section-label {
+    font-size: 13px; font-weight: 700; letter-spacing: 2px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 20px;
+    display: block; border-left: 2px solid var(--gold); padding-left: 12px;
+  }
+  h2 {
+    font-size: clamp(40px, 4.5vw, 64px);
+    font-weight: 500; letter-spacing: -0.5px;
+    line-height: 1.1; margin-bottom: 28px;
+  }
+  .lead {
+    font-size: 17px; color: var(--muted);
+    max-width: 580px; line-height: 1.8;
+    margin-bottom: 72px; font-weight: 400;
+  }
+
+  /* ── PROBLEM ── */
+  .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .problem-card {
+    background: var(--dark); padding: 48px 40px;
+    transition: background 0.3s;
+  }
+  .problem-card:hover { background: var(--surface); }
+  .problem-icon { margin-bottom: 24px; opacity: 0.7; }
+  .problem-icon svg { width: 24px; height: 24px; stroke: var(--gold); stroke-width: 1.5; fill: none; }
+  .problem-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 14px; letter-spacing: -0.2px; }
+  .problem-card p { font-size: 15px; color: var(--muted); line-height: 1.8; font-weight: 400; }
+
+  /* ── SOLUTION ── */
+  .solution-wrap { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .solution-inner { max-width: 1200px; margin: 0 auto; padding: 140px 72px; }
+  .solution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+  .solution-features { display: flex; flex-direction: column; gap: 40px; }
+  .feature-item { display: flex; gap: 24px; align-items: flex-start; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+  .feature-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .feature-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  .feature-icon svg { width: 18px; height: 18px; stroke: var(--gold); stroke-width: 1.5; fill: none; }
+  .persona-icon { margin-bottom: 28px; }
+  .persona-icon svg { width: 32px; height: 32px; stroke: var(--gold); stroke-width: 1.5; fill: none; opacity: 0.8; }
+  .feature-text h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .feature-text p { font-size: 15px; color: var(--muted); line-height: 1.8; font-weight: 400; }
+
+  /* Terminal mock */
+  .terminal {
+    background: #0e0b07;
+    border: 1px solid var(--border2);
+    box-shadow: 0 48px 96px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .terminal-bar {
+    background: var(--surface2); padding: 14px 20px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-red { background: #ff5f57; } .dot-yellow { background: #febc2e; } .dot-green { background: #28c840; }
+  .terminal-title { font-size: 12px; color: var(--muted); margin-left: 8px; font-weight: 400; letter-spacing: 0.5px; }
+  .terminal-body { padding: 28px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12.5px; line-height: 2.1; }
+  .t-prompt { color: var(--gold); } .t-cmd { color: var(--text); } .t-output { color: var(--muted); }
+  .t-success { color: var(--green); } .t-alert { color: var(--gold2); } .t-value { color: var(--accent2); }
+
+  /* ── HOW IT WORKS ── */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 72px; }
+  .step { background: var(--dark); padding: 48px 36px; transition: background 0.3s; }
+  .step:hover { background: var(--surface); }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px; font-weight: 400;
+    color: rgba(201,168,76,0.6); line-height: 1; margin-bottom: 20px;
+  }
+  .step h4 { font-size: 16px; font-weight: 600; margin-bottom: 12px; letter-spacing: -0.2px; }
+  .step p { font-size: 15px; color: var(--muted); line-height: 1.8; font-weight: 400; }
+
+  /* ── USE CASES ── */
+  .personas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 72px; }
+  .persona { background: var(--dark); padding: 56px 44px; transition: background 0.3s; }
+  .persona:hover { background: var(--surface); }
+  .persona h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.3px;
+  }
+  .persona .tagline { font-size: 15px; color: var(--gold); font-weight: 400; margin-bottom: 28px; letter-spacing: 0.3px; }
+  .persona ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .persona ul li { font-size: 14px; color: var(--muted); padding-left: 18px; position: relative; line-height: 1.6; font-weight: 400; }
+  .persona ul li::before { content: '—'; position: absolute; left: 0; color: var(--subtle); }
+
+  /* ── PRICING ── */
+  .pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 72px; }
+  .plan { background: var(--dark); padding: 56px 44px; transition: background 0.3s; }
+  .plan:hover { background: var(--surface); }
+  .plan.featured { background: var(--surface); border-top: 2px solid var(--gold); }
+  .plan-badge {
+    display: inline-block;
+    color: var(--gold); font-size: 13px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 28px; border-bottom: 1px solid rgba(201,168,76,0.3); padding-bottom: 4px;
+  }
+  .plan-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 500; margin-bottom: 12px;
+  }
+  .plan-price { font-size: 48px; font-weight: 700; letter-spacing: -2px; margin-bottom: 4px; }
+  .plan-price span { font-size: 18px; font-weight: 400; color: var(--muted); }
+  .plan-desc { font-size: 14px; color: var(--muted); margin-bottom: 36px; line-height: 1.7; font-weight: 400; border-top: 1px solid var(--border); padding-top: 24px; margin-top: 16px; }
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; }
+  .plan-features li { font-size: 14px; display: flex; align-items: flex-start; gap: 12px; font-weight: 400; }
+  .plan-features li::before { content: '✓'; color: var(--gold); font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+  .plan-features li.muted { color: var(--subtle); }
+  .plan-features li.muted::before { content: '—'; color: var(--subtle); }
+  .plan-btn {
+    display: block; width: 100%; text-align: center;
+    padding: 14px; font-size: 13px; font-weight: 500;
+    letter-spacing: 1px; text-transform: uppercase;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .plan-btn.primary { background: var(--gold); color: #0c0c16; }
+  .plan-btn.primary:hover { opacity: 0.88; }
+  .plan-btn.secondary { background: transparent; color: var(--text); border: 1px solid var(--border2); }
+  .plan-btn.secondary:hover { border-color: rgba(255,255,255,0.25); }
+
+  /* ── NUMBERS ── */
+  .numbers-wrap {
+    border: 1px solid var(--border);
+    padding: 80px 72px; margin-top: 80px;
+    background: var(--surface);
+  }
+  .numbers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-top: 56px; }
+  .number-item { text-align: center; }
+  .number-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px; font-weight: 500; letter-spacing: -2px; color: var(--gold);
+  }
+  .number-label { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; font-weight: 400; }
+
+  /* ── TESTIMONIAL ── */
+  .testimonials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 72px; }
+  .testimonial { background: var(--dark); padding: 48px 40px; }
+  .stars { color: var(--gold); font-size: 14px; margin-bottom: 20px; letter-spacing: 3px; }
+  .testimonial q {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; color: var(--text); line-height: 1.7; font-style: italic; font-weight: 400;
+  }
+  .testimonial-author { margin-top: 28px; display: flex; align-items: center; gap: 14px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .author-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--surface2); border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 14px; color: var(--gold);
+  }
+  .author-name { font-size: 14px; font-weight: 600; }
+  .author-title { font-size: 12px; color: var(--muted); font-weight: 400; }
+
+  /* ── CTA ── */
+  .cta-wrap {
+    text-align: center; padding: 180px 72px;
+    position: relative; overflow: hidden; max-width: 100%;
+    border-top: 1px solid var(--border);
+  }
+  .cta-glow {
+    position: absolute; width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 65%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;
+  }
+  .cta-wrap h2 { position: relative; z-index: 1; font-size: clamp(44px, 5.5vw, 80px); letter-spacing: -1px; margin-bottom: 28px; }
+  .cta-wrap p { position: relative; z-index: 1; font-size: 17px; color: var(--muted); max-width: 460px; margin: 0 auto 56px; font-weight: 400; line-height: 1.8; }
+  .cta-wrap .hero-actions { position: relative; z-index: 1; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border); padding: 40px 72px;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 500; color: var(--muted);
+  }
+  .footer-logo span { color: var(--gold); }
+  footer p { font-size: 13px; color: var(--subtle); }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  /* ── RESPONSIVE ── */
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 140px; }
+  .timeline-item { display: flex; align-items: flex-start; gap: 0; margin-bottom: 0; padding: 0 0 48px 0; position: relative; }
+  .timeline-time { position: absolute; left: -140px; width: 110px; text-align: right; font-size: 13px; color: var(--muted); font-weight: 500; padding-top: 20px; font-variant-numeric: tabular-nums; }
+  .timeline-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--border2); border: 2px solid var(--accent); position: absolute; left: -6px; top: 22px; flex-shrink: 0; z-index: 1; }
+  .timeline-dot.alert { background: rgba(248,113,113,0.3); border-color: #f87171; box-shadow: 0 0 8px rgba(248,113,113,0.4); }
+  .timeline-dot.green { background: rgba(74,222,128,0.3); border-color: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.4); }
+  .timeline-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-left: 24px; flex: 1; }
+  .timeline-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+  .timeline-tag.alert { color: #f87171; }
+  .timeline-tag.success { color: #4ade80; }
+  .timeline-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
+  .timeline-body { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* ── FAQ ── */
+  .faq-item { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; margin-bottom: 8px; }
+  .faq-item:hover { border-color: var(--border2); }
+  .faq-item.open { border-color: rgba(196,154,62,0.3); }
+  .faq-q { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; font-size: 15px; font-weight: 500; color: var(--text); gap: 16px; }
+  .faq-icon { color: var(--accent); font-size: 20px; font-weight: 300; flex-shrink: 0; transition: transform 0.2s; line-height: 1; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a { display: none; padding: 0 24px 20px; font-size: 14px; color: var(--muted); line-height: 1.8; border-top: 1px solid var(--border); padding-top: 16px; }
+  .faq-item.open .faq-a { display: block; }
+
+  /* ── AGENT ROSTER ── */
+  .roster-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0; }
+  .roster-tab {
+    background: var(--darker); border: 1px solid var(--border2);
+    color: var(--muted); font-size: 13px; font-weight: 500;
+    padding: 9px 18px; border-radius: 8px 8px 0 0; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.2s;
+    border-bottom: none; position: relative; top: 1px;
+  }
+  .roster-tab:hover { color: var(--text); border-color: rgba(255,240,200,0.2); }
+  .roster-tab.active { background: var(--surface2); border-color: var(--border2); color: var(--accent2); border-bottom: 1px solid var(--surface2); }
+  .roster-panel {
+    display: none; background: var(--surface2);
+    border: 1px solid var(--border2); border-radius: 0 12px 12px 12px;
+    padding: 36px 40px;
+  }
+  .roster-panel.active { display: block; }
+  .roster-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+  .roster-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .roster-provider { font-size: 13px; color: var(--muted); }
+  .roster-updated { font-size: 12px; color: var(--muted); background: var(--darker); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; white-space: nowrap; }
+  .status-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
+  .status-badge.active { background: rgba(74,222,128,0.1); color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
+  .status-badge.evaluating { background: rgba(196,154,62,0.1); color: var(--accent2); border: 1px solid rgba(196,154,62,0.25); }
+  .status-badge.monitoring { background: rgba(148,163,184,0.1); color: #94a3b8; border: 1px solid rgba(148,163,184,0.2); }
+  .roster-body { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .roster-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
+  .roster-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .roster-list li { font-size: 14px; color: var(--muted); line-height: 1.6; padding-left: 16px; position: relative; }
+  .roster-list li::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .hero-content { padding: 100px 24px; }
+    .problem-grid, .personas, .pricing, .steps, .testimonials { grid-template-columns: 1fr; }
+    .build-grid { grid-template-columns: 1fr !important; gap: 0 !important; }
+    .build-grid > div { margin-bottom: 20px !important; padding: 28px 24px !important; }
+    .roster-body { grid-template-columns: 1fr; gap: 24px; }
+    .roster-panel { padding: 24px 20px; border-radius: 0 0 12px 12px; }
+    .roster-tab { font-size: 12px; padding: 8px 12px; }
+    .timeline { padding-left: 0; }
+    .timeline-line { display: none !important; }
+    .timeline-time { position: static; width: auto; text-align: left; padding: 0 0 4px 0; font-size: 12px; color: var(--accent); }
+    .timeline-item { flex-direction: column; padding-bottom: 24px; }
+    .timeline-dot { display: none; }
+    .timeline-card { margin-left: 0; margin-top: 8px; }
+    .privacy-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+    .solution-grid { grid-template-columns: 1fr; }
+    .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    .solution-inner { padding: 80px 24px; }
+    /* Dispatch table — scroll on mobile */
+    .dispatch-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    /* Landscape spectrum — stack vertically on mobile */
+    .landscape-spectrum { flex-direction: column; align-items: flex-start !important; gap: 8px !important; }
+    .landscape-spectrum .spectrum-connector { width: 1px; height: 16px; background: var(--border2); margin-left: 60px; }
+    .landscape-desc { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 20px !important; margin-top: 8px; }
+    .landscape-wrap { flex-direction: column !important; }
   }
 </style>
 </head>
 <body>
 
-<div class="glow"></div>
-<canvas id="c"></canvas>
+<!-- NAV -->
+<nav>
+  <div class="logo">Intel<span>Agent</span></div>
+  <div class="nav-links">
+    <a href="#problem">Problem</a>
+    <a href="#solution">Solution</a>
+    <a href="#personas">Who It's For</a>
+    <a href="#day-in-life">A Day in the Life</a>
+    <a href="#right-tool">Why Multi-Agent</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a href="intake.html" class="nav-cta">Book a Call →</a>
+</nav>
 
-<main>
-  <div class="brand">
-    <span class="w">Intel</span><span class="g">Agent</span>
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Now accepting clients — limited spots</div>
+    <div style="margin-bottom: 32px;">
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 7.5vw, 110px); font-weight: 600; font-style: normal; letter-spacing: 2px; line-height: 1.1;"><span style="color: var(--text);">Intel</span><span style="color: var(--gold);">Agent</span></div>
+      <div style="font-family: 'Syne', sans-serif; font-size: clamp(11px, 1.2vw, 15px); font-weight: 700; letter-spacing: 5px; color: var(--muted); text-transform: uppercase; margin-top: 10px;">AI that actually knows you</div>
+    </div>
+    <h1 style="font-size: clamp(22px, 3vw, 38px); font-style: italic; font-weight: 400; letter-spacing: 0;">You didn't work this hard<br>to spend your Sunday<br><span class="highlight">checking emails.</span></h1>
+    <p class="hero-sub">IntelAgent builds you a personal AI that handles the noise — so you can be outside, present, and doing the work only you can do.</p>
+    <div style="margin-top: 0; margin-bottom: 0; padding: 24px 32px; background: rgba(196,154,62,0.07); border: 1px solid rgba(196,154,62,0.2); border-radius: 12px; font-size: clamp(14px, 1.5vw, 17px); color: var(--muted); line-height: 1.7; max-width: 520px;">
+      We don't just set up your AI.<br><strong style="color: var(--accent2);">We build its memory — and keep building it.</strong>
+    </div>
+    <div class="hero-actions">
+      <a href="intake.html" class="btn-primary">Book a Discovery Call</a>
+      <a href="#solution" class="btn-secondary">See How It Works</a>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="section-label">— The Problem</div>
+  <h2>AI is everywhere.<br>Useful AI is rare.</h2>
+  <p class="lead">Everyone has access to powerful AI models. Almost nobody has an AI that actually knows them, works proactively, and improves over time. The gap isn't the technology — it's the setup.</p>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="2" y1="2" x2="22" y2="22" stroke-width="1.5"/></svg></div>
+      <h3>It forgets everything</h3>
+      <p>Every conversation starts from zero. Your AI doesn't know your history, your priorities, your decisions, or what you discussed last week. You're constantly re-explaining yourself.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <h3>It only works when you do</h3>
+      <p>You have to ask it everything. It never checks anything on its own. Proactive intelligence — the kind that texts you when something important happens — doesn't exist out of the box.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+      <h3>Generic answers to specific problems</h3>
+      <p>It doesn't know your situation, your constraints, your past decisions, or what actually matters to you. So its answers are generic, hedged, and ultimately not that useful.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- WHAT WE ACTUALLY BUILD -->
+<section id="what-we-build" style="background: var(--darker);">
+  <div class="section-label">— What We Actually Build</div>
+  <h2>Not a chatbot.<br>A permanent intelligence layer.</h2>
+  <p class="lead" style="max-width: 640px;">Most AI tools wait for you to open them. What IntelAgent builds reaches out to you — because it's been watching your world while you weren't.</p>
+
+  <div style="margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;" class="build-grid">
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 36px 32px;">
+      <div style="width: 44px; height: 44px; background: rgba(196,154,62,0.1); border: 1px solid rgba(196,154,62,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-1.16 2.76A4 4 0 0 1 16 12a4 4 0 0 1-2 3.46V17a2 2 0 0 1-2 2h-0a2 2 0 0 1-2-2v-1.54A4 4 0 0 1 8 12a4 4 0 0 1 1.16-2.76A4 4 0 0 1 8 6a4 4 0 0 1 4-4z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="10" y1="11" x2="14" y2="11"/></svg>
+      </div>
+      <h4 style="font-size: 17px; font-weight: 600; margin-bottom: 12px;">Memory Architecture</h4>
+      <p style="color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 20px;">A structured long-term memory system — decisions, preferences, context, history. Month 6, your AI knows your world better than any colleague.</p>
+      <div style="font-size: 13px; color: var(--accent); font-style: italic; border-top: 1px solid var(--border); padding-top: 16px;">"It knew why I'd been watching that stock — from a conversation we'd had two months ago."</div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 36px 32px;">
+      <div style="width: 44px; height: 44px; background: rgba(196,154,62,0.1); border: 1px solid rgba(196,154,62,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h4 style="font-size: 17px; font-weight: 600; margin-bottom: 12px;">Autonomous Monitoring</h4>
+      <p style="color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 20px;">A custom cron network watching your world 24/7 — markets, emails, calendars, price levels, news feeds. It acts on your rules while you sleep.</p>
+      <div style="font-size: 13px; color: var(--accent); font-style: italic; border-top: 1px solid var(--border); padding-top: 16px;">"It messaged me at 6am because a stop level triggered — before markets opened."</div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 36px 32px;">
+      <div style="width: 44px; height: 44px; background: rgba(196,154,62,0.1); border: 1px solid rgba(196,154,62,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </div>
+      <h4 style="font-size: 17px; font-weight: 600; margin-bottom: 12px;">Proactive Intelligence</h4>
+      <p style="color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 20px;">It reaches out to you — on Telegram, WhatsApp, or iMessage — with alerts, briefs, and insights you actually care about. You stop going to it.</p>
+      <div style="font-size: 13px; color: var(--accent); font-style: italic; border-top: 1px solid var(--border); padding-top: 16px;">"My morning brief was ready before I poured my coffee."</div>
+    </div>
+
   </div>
 
-  <div class="rule"></div>
+  <!-- Compounding value callout -->
+  <div style="margin-top: 32px; background: linear-gradient(135deg, rgba(196,154,62,0.08), rgba(196,154,62,0.03)); border: 1px solid rgba(196,154,62,0.2); border-radius: 16px; padding: 40px 48px; display: flex; align-items: center; gap: 48px; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 220px;">
+      <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 12px;">The Compounding Effect</div>
+      <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; line-height: 1.4; margin-bottom: 0;">Context that builds.<br>Value that compounds.<br>Intelligence that's yours.</h3>
+    </div>
+    <div style="flex: 2; min-width: 260px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: center;">
+      <div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 600; color: var(--accent2); line-height: 1;">Day 1</div>
+        <div style="color: var(--muted); font-size: 13px; margin-top: 8px;">Knows your basics.<br>Already useful.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 600; color: var(--accent2); line-height: 1;">Month 3</div>
+        <div style="color: var(--muted); font-size: 13px; margin-top: 8px;">Knows your patterns.<br>Anticipates your needs.</div>
+      </div>
+      <div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 600; color: var(--accent2); line-height: 1;">Month 12</div>
+        <div style="color: var(--muted); font-size: 13px; margin-top: 8px;">Knows your world.<br>Irreplaceable.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <div class="lines">
-    <div class="line">Self-learning.</div>
-    <div class="line">Self-evolving.</div>
-    <div class="line accent">Reaching out to you.</div>
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- TIME BACK -->
+<section style="text-align: center; padding: 100px 0;">
+  <div style="max-width: 720px; margin: 0 auto;">
+    <div class="section-label" style="display: inline-block; border-left: none; padding-left: 0; border-bottom: 1px solid var(--gold); padding-bottom: 6px;">— What You Get Back</div>
+    <h2 style="font-size: clamp(32px, 5vw, 52px); margin: 32px 0 28px;">The goal isn't a better inbox.<br>It's a better life.</h2>
+    <p style="font-size: 18px; color: var(--muted); line-height: 1.9; margin-bottom: 48px;">When the noise is handled — the emails, the alerts, the research, the follow-ups — you get back the one thing no tool can manufacture: <strong style="color: var(--text);">time that's actually yours.</strong></p>
+    <p style="font-size: 18px; color: var(--muted); line-height: 1.9; margin-bottom: 64px;">Time to be outside. On a trail in the mountains, not checking your phone. With your family, fully present. Doing the creative work that only you can do — because the rest is handled.</p>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 16px;">
+      <div style="padding: 40px 32px; background: var(--surface); border: 1px solid var(--border);">
+        <div style="margin-bottom: 20px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; margin-bottom: 10px;">Fully present</div>
+        <div style="font-size: 14px; color: var(--muted); line-height: 1.7;">With the people who matter — not half-distracted by what you might be missing.</div>
+      </div>
+      <div style="padding: 40px 32px; background: var(--surface); border: 1px solid var(--border);">
+        <div style="margin-bottom: 20px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/><path d="M12 8l-4 4 4 4M16 8l4 4-4 4" stroke-width="1.2"/></svg>
+        </div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; margin-bottom: 10px;">Outside</div>
+        <div style="font-size: 14px; color: var(--muted); line-height: 1.7;">On a trail, on a slope, on a lake — while your agent monitors what needs monitoring.</div>
+      </div>
+      <div style="padding: 40px 32px; background: var(--surface); border: 1px solid var(--border);">
+        <div style="margin-bottom: 20px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; margin-bottom: 10px;">In flow</div>
+        <div style="font-size: 14px; color: var(--muted); line-height: 1.7;">Doing the work only you can do — no context switching, no administrative drag.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- DAY IN THE LIFE -->
+<section id="day-in-life">
+  <div class="section-label">— A Day in the Life</div>
+  <h2>What your day looks like<br><em>after</em> your agent is built.</h2>
+  <p class="lead" style="max-width: 580px;">You don't go to it. It comes to you — at exactly the right moment, with exactly what you need.</p>
+
+  <div style="margin-top: 64px; position: relative;">
+    <!-- Timeline line -->
+    <div style="position: absolute; left: 120px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, var(--border2) 5%, var(--border2) 95%, transparent); display: block;" class="timeline-line"></div>
+
+    <div style="display: flex; flex-direction: column; gap: 0;" class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-time">6:47 AM</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-tag">Morning Brief</div>
+          <div class="timeline-title">Your agent sends your daily brief before you're out of bed.</div>
+          <div class="timeline-body">Overnight macro developments, your portfolio performance, what's on your calendar, and three things to watch today. All in one Telegram message. No apps to open.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">9:14 AM</div>
+        <div class="timeline-dot alert"></div>
+        <div class="timeline-card">
+          <div class="timeline-tag alert">Price Alert</div>
+          <div class="timeline-title">TSLA hits your watch level. You're notified instantly.</div>
+          <div class="timeline-body">"TSLA crossed $354 — your stop level. EMA50 breached on volume. Your rule: no action in thin pre-market, wait for regular hours open." It knows your rules. It applies them for you.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">11:30 AM</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-tag">Research</div>
+          <div class="timeline-title">You ask a complex question. It answers with full context.</div>
+          <div class="timeline-body">"Should I add to my MRVL position here?" It pulls your cost basis, current stop, the earnings beat from last week, analyst sentiment, and the macro regime — then gives you a structured GO / WAIT / NO-GO with reasoning. In 8 seconds.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">2:45 PM</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-tag">Intelligence</div>
+          <div class="timeline-title">Post-market summary arrives before you've even closed your laptop.</div>
+          <div class="timeline-body">Social sentiment scan, analyst alerts, notable options flow on your watchlist, and a one-line verdict on the day. Pulled from X, financial feeds, and your portfolio — synthesised by Grok and Claude in parallel.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">10:00 PM</div>
+        <div class="timeline-dot green"></div>
+        <div class="timeline-card">
+          <div class="timeline-tag success">Nothing to do</div>
+          <div class="timeline-title">The system handled it. You didn't have to.</div>
+          <div class="timeline-body">No tabs open. No newsletters unread. No prices checked. Everything that needed attention got flagged. Everything that didn't was filtered. You were just... living your life.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- SOLUTION -->
+<div class="solution-wrap">
+  <div class="solution-inner">
+    <div class="solution-grid">
+      <div>
+        <div class="section-label" id="solution">— The Solution</div>
+        <h2>An AI that's actually configured for your life.</h2>
+        <p class="lead" style="margin-bottom: 40px;">We build a fully personalized AI agent that knows who you are, works autonomously in the background, and gets smarter with every interaction.</p>
+
+        <div class="solution-features">
+          <div class="feature-item">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14"/></svg></div>
+            <div class="feature-text">
+              <h4>Persistent memory</h4>
+              <p>Your agent remembers decisions, preferences, context — everything. It picks up exactly where you left off, every session.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+            <div class="feature-text">
+              <h4>Proactive monitoring</h4>
+              <p>Scheduled checks, price alerts, news scans, calendar reminders — running automatically, 24/7, without you lifting a finger.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="feature-text">
+              <h4>Personality built around you</h4>
+              <p>Your agent has your communication style, your priorities, your tone preferences. It feels like talking to a brilliant colleague who knows you well.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+            <div class="feature-text">
+              <h4>Gets better over time</h4>
+              <p>Every interaction enriches the context. The agent you have in six months will be materially smarter than the one you start with.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABBED TERMINAL -->
+      <div>
+        <!-- Tab hint -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c49a3e" stroke-width="2"><path d="M15 15l6 6m-11-4a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/></svg>
+          <span style="font-size: 12px; color: var(--muted); letter-spacing: 0.5px;">Select a role to see a real example</span>
+        </div>
+
+        <!-- Tab buttons -->
+        <div style="display: flex; gap: 0; margin-bottom: -1px; flex-wrap: wrap;">
+          <button onclick="showTab('trader')" id="tab-trader" class="demo-tab demo-tab-active">Trader</button>
+          <button onclick="showTab('lawyer')" id="tab-lawyer" class="demo-tab">Lawyer</button>
+          <button onclick="showTab('accountant')" id="tab-accountant" class="demo-tab">Accountant</button>
+          <button onclick="showTab('professor')" id="tab-professor" class="demo-tab">Professor</button>
+          <button onclick="showTab('physician')" id="tab-physician" class="demo-tab">Physician</button>
+          <button onclick="showTab('parent')" id="tab-parent" class="demo-tab">Parent</button>
+          <button onclick="showTab('admin')" id="tab-admin" class="demo-tab">Executive</button>
+          <button onclick="showTab('athlete')" id="tab-athlete" class="demo-tab">Athlete</button>
+          <button onclick="showTab('researcher')" id="tab-researcher" class="demo-tab">Researcher</button>
+        </div>
+
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span class="terminal-title" id="demo-title">Trader — Your Agent, Live</span>
+          </div>
+
+          <!-- TRADER -->
+          <div class="terminal-body" id="demo-trader">
+            <div><span class="t-prompt">07:04 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-alert">⚠ TSLA down 3.2%</span> <span class="t-output">— near your stop $375</span></div>
+            <div><span class="t-output">NVDA: hold. No entry yet.</span></div>
+            <div><span class="t-output">Fed minutes at 2pm ET.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">09:31 AM ›</span> <span class="t-alert">PRICE ALERT</span></div>
+            <div><span class="t-value">TSLA $374.80</span> <span class="t-output">— crossed warn level.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Should I add here?</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Not yet. Market still weak.</span></div>
+            <div><span class="t-success">Watching. I'll alert you.</span></div>
+          </div>
+
+          <!-- LAWYER -->
+          <div class="terminal-body" id="demo-lawyer" style="display:none;">
+            <div><span class="t-prompt">07:30 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-alert">DEADLINE TODAY</span> <span class="t-output">— Hernandez motion filing, 5pm</span></div>
+            <div><span class="t-output">3 client emails flagged urgent.</span></div>
+            <div><span class="t-output">Opposing counsel filed yesterday</span></div>
+            <div><span class="t-output">— summary waiting for you.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">10:15 AM ›</span> <span class="t-success">Case Law Alert</span></div>
+            <div><span class="t-output">New ruling in 9th Circuit matches</span></div>
+            <div><span class="t-output">your Hernandez argument. Flagged.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Summarise the new ruling.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Court held that warrantless</span></div>
+            <div><span class="t-output">digital searches require...</span></div>
+            <div><span class="t-success">Full brief sent to your email.</span></div>
+          </div>
+
+          <!-- ACCOUNTANT -->
+          <div class="terminal-body" id="demo-accountant" style="display:none;">
+            <div><span class="t-prompt">08:00 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-alert">TAX DEADLINE</span> <span class="t-output">— 4 client filings due this week</span></div>
+            <div><span class="t-output">CRA updated SR&ED guidelines</span></div>
+            <div><span class="t-output">overnight — affects 2 clients.</span></div>
+            <div><span class="t-output">Client Chen: docs still missing.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Draft a reminder to Chen.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Draft ready. Tone: professional,</span></div>
+            <div><span class="t-output">friendly. Mentions April 30th.</span></div>
+            <div><span class="t-success">Ready to send — confirm?</span></div>
+          </div>
+
+          <!-- PROFESSOR -->
+          <div class="terminal-body" id="demo-professor" style="display:none;">
+            <div><span class="t-prompt">07:45 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-output">Lecture at 10am — slides ready.</span></div>
+            <div><span class="t-alert">NEW PAPER</span> <span class="t-output">in Nature — matches your</span></div>
+            <div><span class="t-output">current research on neural plasticity.</span></div>
+            <div><span class="t-output">Grant deadline: 11 days out.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Summarise the Nature paper.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Key finding: synaptic pruning</span></div>
+            <div><span class="t-output">accelerates 3x in adolescence...</span></div>
+            <div><span class="t-success">Full summary + DOI sent to email.</span></div>
+          </div>
+
+          <!-- PHYSICIAN -->
+          <div class="terminal-body" id="demo-physician" style="display:none;">
+            <div><span class="t-prompt">06:45 AM ›</span> <span class="t-success">Morning Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-output">7 patients in clinic today.</span></div>
+            <div><span class="t-alert">FLAG</span> <span class="t-output">— Johnson (Rm 3): new labs</span></div>
+            <div><span class="t-output">show eGFR drop. Metformin dose</span></div>
+            <div><span class="t-output">may need review before you see them.</span></div>
+            <div><span class="t-output">Grand rounds at noon. Abstract due</span></div>
+            <div><span class="t-output">Friday — 3 days out.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Any new guidance on GLP-1 dosing?</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">ADA updated guidance Feb 2026.</span></div>
+            <div><span class="t-output">Tirzepatide now first-line for</span></div>
+            <div><span class="t-output">T2D with CVD risk. Summary sent.</span></div>
+            <div><span class="t-success">Relevant for 2 of today's patients.</span></div>
+          </div>
+
+          <!-- PARENT -->
+          <div class="terminal-body" id="demo-parent" style="display:none;">
+            <div><span class="t-prompt">07:00 AM ›</span> <span class="t-success">Good morning! Here's your day.</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-output">Emma: soccer practice at 4pm.</span></div>
+            <div><span class="t-output">Liam: dentist at 2:30pm.</span></div>
+            <div><span class="t-alert">LOW STOCK</span> <span class="t-output">— milk, eggs, bread.</span></div>
+            <div><span class="t-output">Weather: rain after 3pm.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">What should I make for dinner?</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">You have chicken + pasta.</span></div>
+            <div><span class="t-output">Liam had this Tuesday — try</span></div>
+            <div><span class="t-success">stir fry instead. Recipe sent.</span></div>
+          </div>
+
+          <!-- EXECUTIVE / ADMIN -->
+          <div class="terminal-body" id="demo-admin" style="display:none;">
+            <div><span class="t-prompt">07:00 AM ›</span> <span class="t-success">Executive Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-output">Board deck due Thursday. 2 slides</span></div>
+            <div><span class="t-output">still need Q1 actuals.</span></div>
+            <div><span class="t-alert">ACTION</span> <span class="t-output">— Finance hasn't responded.</span></div>
+            <div><span class="t-output">Draft follow-up ready for review.</span></div>
+            <div><span class="t-output">All-hands Monday — agenda not set.</span></div>
+            <div><span class="t-output">3 competitor moves this week flagged.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">Summarise the competitor moves.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Stripe launched instant payouts</span></div>
+            <div><span class="t-output">in Canada. Shopify acquired a</span></div>
+            <div><span class="t-output">logistics startup. Full brief ready.</span></div>
+            <div><span class="t-success">Want a slide for the board deck?</span></div>
+          </div>
+
+          <!-- ATHLETE -->
+          <div class="terminal-body" id="demo-athlete" style="display:none;">
+            <div><span class="t-prompt">06:30 AM ›</span> <span class="t-success">Game Day Brief</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-output">HRV last night: 71 (↓9 from avg).</span></div>
+            <div><span class="t-alert">NOTE</span> <span class="t-output">— recovery score below threshold.</span></div>
+            <div><span class="t-output">Coach has flagged modified load today.</span></div>
+            <div><span class="t-output">Match vs. Seattle: 7pm. Travel at 2pm.</span></div>
+            <div><span class="t-output">Nutrition: pre-game window opens 3pm.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">What does the tape say on their #7?</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Strong left side. 73% of drives go</span></div>
+            <div><span class="t-output">left on third down. Weak backhand.</span></div>
+            <div><span class="t-success">Full scouting note sent to your phone.</span></div>
+          </div>
+
+          <!-- RESEARCHER -->
+          <div class="terminal-body" id="demo-researcher" style="display:none;">
+            <div><span class="t-prompt">08:15 AM ›</span> <span class="t-success">Research Brief Ready</span></div>
+            <div><span class="t-output">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+            <div><span class="t-alert">4 NEW PAPERS</span> <span class="t-output">matching your keywords</span></div>
+            <div><span class="t-output">overnight — 2 high relevance flagged.</span></div>
+            <div><span class="t-output">Grant deadline: 8 days. Word count</span></div>
+            <div><span class="t-output">1,240 / 5,000 — behind pace.</span></div>
+            <div><span class="t-output">Co-author Chen hasn't pushed since Tue.</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">You ›</span> <span class="t-cmd">How does the Sharma paper affect our hypothesis?</span></div>
+            <div>&nbsp;</div>
+            <div><span class="t-prompt">Agent ›</span> <span class="t-output">Sharma's n=42 is underpowered for</span></div>
+            <div><span class="t-output">your claim. Doesn't contradict —</span></div>
+            <div><span class="t-output">actually supports your mechanism.</span></div>
+            <div><span class="t-success">Suggested citation block ready.</span></div>
+          </div>
+
+        </div><!-- end terminal -->
+      </div><!-- end tabbed terminal -->
+
+      <style>
+        .demo-tab {
+          background: var(--surface2); color: var(--muted);
+          border: 1px solid var(--border); border-bottom: none;
+          padding: 10px 20px; font-size: 13px; font-weight: 500;
+          cursor: pointer; letter-spacing: 0.3px;
+          transition: all 0.15s; font-family: 'Inter', sans-serif;
+        }
+        .demo-tab:hover { color: var(--text); background: var(--surface); }
+        .demo-tab-active { background: #08080f !important; color: var(--gold) !important; border-color: var(--border2) !important; border-bottom-color: #08080f !important; }
+      </style>
+      <script>
+        function showTab(name) {
+          ['trader','lawyer','accountant','professor','physician','parent','admin','athlete','researcher'].forEach(function(t) {
+            document.getElementById('demo-' + t).style.display = 'none';
+            document.getElementById('tab-' + t).classList.remove('demo-tab-active');
+          });
+          document.getElementById('demo-' + name).style.display = 'block';
+          document.getElementById('tab-' + name).classList.add('demo-tab-active');
+          var titles = {
+            trader: 'Trader — Your Agent, Live',
+            lawyer: 'Lawyer — Your Agent, Live',
+            accountant: 'Accountant — Your Agent, Live',
+            professor: 'Professor — Your Agent, Live',
+            physician: 'Physician — Your Agent, Live',
+            parent: 'Parent — Your Agent, Live',
+            admin: 'Executive — Your Agent, Live',
+            athlete: 'Athlete — Your Agent, Live',
+            researcher: 'Researcher — Your Agent, Live'
+          };
+          document.getElementById('demo-title').textContent = titles[name];
+        }
+      </script>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- USE CASES -->
+<section id="personas">
+  <div class="section-label">— Who It's For</div>
+  <h2>Built for people who<br>make high-stakes decisions.</h2>
+  <p class="lead">IntelAgent is designed for professionals whose time is genuinely valuable and whose decisions genuinely matter.</p>
+
+  <div class="personas">
+    <div class="persona">
+      <div class="persona-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <h3>Traders & Investors</h3>
+      <p class="tagline">Never miss a setup. Never chase a move.</p>
+      <ul>
+        <li>Price alerts with context, not just numbers</li>
+        <li>Pre-market brief: news, levels, regime</li>
+        <li>Earnings calendar + whisper number alerts</li>
+        <li>Unusual options activity scanner</li>
+        <li>Portfolio stop monitoring 24/7</li>
+        <li>Weekly macro + technical report</li>
+      </ul>
+    </div>
+    <div class="persona">
+      <div class="persona-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+      <h3>Physicians & Clinicians</h3>
+      <p class="tagline">Stay current without drowning in journals.</p>
+      <ul>
+        <li>Specialty-specific journal monitoring</li>
+        <li>Clinical trial result alerts (your criteria)</li>
+        <li>CME tracking and reminders</li>
+        <li>Patient follow-up prompts</li>
+        <li>Drug/treatment update scanner</li>
+        <li>Admin workflow automation</li>
+      </ul>
+    </div>
+    <div class="persona">
+      <div class="persona-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+      <h3>Executives & Founders</h3>
+      <p class="tagline">Intelligence before every meeting.</p>
+      <ul>
+        <li>Competitor monitoring and alerts</li>
+        <li>Daily business metric brief</li>
+        <li>Board prep and investor update drafts</li>
+        <li>Regulatory and news tracking</li>
+        <li>Calendar intelligence and briefings</li>
+        <li>Email triage and priority flags</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- RIGHT TOOL -->
+<section id="right-tool" style="background: var(--surface);">
+  <div class="section-label">— The Orchestration Advantage</div>
+  <h2>No single AI is best<br>at everything.</h2>
+  <p class="lead" style="max-width: 620px;">Most people pick one AI and use it for everything. That's like hiring one person to be your surgeon, accountant, and mechanic. We match the right model to the right job — and keep that match current as models evolve.</p>
+
+  <div style="margin-top: 36px; padding: 28px 36px; background: rgba(196,154,62,0.05); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; max-width: 720px;">
+    <p style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; font-weight: 500; color: var(--text); line-height: 1.6; margin-bottom: 12px;">"Follow the X debates long enough and you'll notice: everyone's arguing about which AI is best. The professionals winning with AI aren't picking sides. They're using all of them."</p>
+    <p style="font-size: 13px; color: var(--muted);">The Claude vs GPT vs Grok debate is the wrong question. The right question is: <strong style="color: var(--text);">which one, for what?</strong> We know the answer — and we configure your agent accordingly.</p>
   </div>
 
-  <a href="pitch.html" class="enter">
-    Enter
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </a>
-</main>
+  <!-- Model cards -->
+  <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 56px;" class="model-grid">
 
+    <div style="background: var(--darker); border: 1px solid var(--border2); border-radius: 14px; padding: 28px 24px;">
+      <div style="font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: 0.5px;">Claude Sonnet</div>
+      <div style="font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">Anthropic</div>
+      <div style="font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 16px;">Nuanced reasoning, deep memory, complex multi-step analysis. Your primary thinking partner.</div>
+      <div style="font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px;">
+        <span style="color: var(--text); font-weight: 500;">Best for:</span> Analysis, decisions, long context
+      </div>
+    </div>
+
+    <div style="background: var(--darker); border: 1px solid var(--border2); border-radius: 14px; padding: 28px 24px;">
+      <div style="font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: 0.5px;">Grok</div>
+      <div style="font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">xAI</div>
+      <div style="font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 16px;">Real-time web search, live social sentiment, what's happening right now. No knowledge cutoff.</div>
+      <div style="font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px;">
+        <span style="color: var(--text); font-weight: 500;">Best for:</span> News, market sentiment, live data
+      </div>
+    </div>
+
+    <div style="background: var(--darker); border: 1px solid var(--border2); border-radius: 14px; padding: 28px 24px;">
+      <div style="font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: 0.5px;">Gemini</div>
+      <div style="font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">Google</div>
+      <div style="font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 16px;">Massive context windows, document analysis, research synthesis across hundreds of pages.</div>
+      <div style="font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px;">
+        <span style="color: var(--text); font-weight: 500;">Best for:</span> Documents, research, large data
+      </div>
+    </div>
+
+    <div style="background: var(--darker); border: 1px solid var(--border2); border-radius: 14px; padding: 28px 24px;">
+      <div style="font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: 0.5px;">Haiku / Flash</div>
+      <div style="font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">Fast &amp; Efficient</div>
+      <div style="font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 16px;">Lightning fast, low cost. Perfect for high-frequency background monitoring that runs 24/7.</div>
+      <div style="font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px;">
+        <span style="color: var(--text); font-weight: 500;">Best for:</span> Monitoring, alerts, routine tasks
+      </div>
+    </div>
+
+    <div style="background: var(--darker); border: 1px solid var(--border2); border-radius: 14px; padding: 28px 24px;">
+      <div style="font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: 0.5px;">ChatGPT / GPT-4o</div>
+      <div style="font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">OpenAI</div>
+      <div style="font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 16px;">The model everyone knows. Strong code generation, broad integrations, and the widest third-party ecosystem.</div>
+      <div style="font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px;">
+        <span style="color: var(--text); font-weight: 500;">Best for:</span> Code, voice, existing OpenAI integrations
+      </div>
+    </div>
+
+    <div style="background: var(--darker); border: 1px solid var(--border2); border-radius: 14px; padding: 28px 24px;">
+      <div style="font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: 0.5px;">Perplexity</div>
+      <div style="font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">Search Engine</div>
+      <div style="font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 16px;">A smarter Google. Answers questions with cited web sources. Fast and accurate — but session-only, reactive, and completely generic.</div>
+      <div style="font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 14px;">
+        <span style="color: var(--text); font-weight: 500;">Perplexity answers questions.</span> IntelAgent runs your life.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Evolving stack callout -->
+  <div style="margin-top: 32px; display: flex; align-items: center; gap: 48px; background: var(--darker); border: 1px solid var(--border2); border-radius: 16px; padding: 36px 48px; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 220px;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 12px;">The Compounding Model Advantage</div>
+      <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; line-height: 1.4;">What's best today isn't<br>best in 6 months.</h3>
+    </div>
+    <div style="flex: 2; min-width: 260px;">
+      <p style="color: var(--muted); font-size: 15px; line-height: 1.8; margin-bottom: 16px;">AI models improve monthly. GPT-5, Claude 4, Gemini 3 — the landscape shifts constantly. Elite clients receive regular model stack reviews: we rebalance which AI handles which task as better tools emerge.</p>
+      <p style="color: var(--text); font-size: 15px; font-style: italic; font-family: 'Cormorant Garamond', serif;">"We match the right AI to the right task — and keep that match current."</p>
+    </div>
+  </div>
+
+  <!-- Multi-agent teaser -->
+  <div style="margin-top: 20px; padding: 28px 36px; border: 1px dashed rgba(196,154,62,0.25); border-radius: 16px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap;">
+    <div style="flex: 0 0 auto;">
+      <div style="width: 48px; height: 48px; background: rgba(196,154,62,0.08); border: 1px solid rgba(196,154,62,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="12" y1="8" x2="5" y2="16"/><line x1="12" y1="8" x2="19" y2="16"/></svg>
+      </div>
+    </div>
+    <div style="flex: 1; min-width: 220px;">
+      <div style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px;">Multi-Agent Architecture <span style="font-size: 11px; color: var(--accent); border: 1px solid rgba(196,154,62,0.3); border-radius: 4px; padding: 2px 8px; margin-left: 8px; font-weight: 600;">Elite</span></div>
+      <p style="font-size: 14px; color: var(--muted); line-height: 1.7;">When one agent isn't enough — we deploy specialised agents for distinct domains (market intelligence, research, communications) that feed into a single unified interface. You see one clean Telegram conversation. Behind it: an orchestrated network.</p>
+    </div>
+  </div>
+
+  <!-- Agent Roster -->
+  <div style="margin-top: 48px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+      <div>
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); font-weight: 600; margin-bottom: 6px;">Live Agent Roster</div>
+        <div style="font-size: 14px; color: var(--muted);">Click any model to see its full profile — updated as the landscape evolves.</div>
+      </div>
+      <div style="font-size: 12px; color: var(--muted); background: var(--darker); border: 1px solid var(--border); border-radius: 6px; padding: 6px 14px;">Last reviewed: <strong style="color: var(--text);">March 2026</strong></div>
+    </div>
+
+    <!-- Tab buttons -->
+    <div class="roster-tabs" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0;">
+      <button class="roster-tab active" data-tab="claude" onclick="switchTab('claude')">Claude Sonnet</button>
+      <button class="roster-tab" data-tab="grok" onclick="switchTab('grok')">Grok</button>
+      <button class="roster-tab" data-tab="gemini" onclick="switchTab('gemini')">Gemini</button>
+      <button class="roster-tab" data-tab="haiku" onclick="switchTab('haiku')">Haiku / Flash</button>
+      <button class="roster-tab" data-tab="gpt" onclick="switchTab('gpt')">GPT-4o</button>
+    </div>
+
+    <!-- Tab panels -->
+    <div class="roster-panel active" id="tab-claude">
+      <div class="roster-header">
+        <div>
+          <div class="roster-name">Claude Sonnet 4</div>
+          <div class="roster-provider">Anthropic · <span class="status-badge active">Active — Primary</span></div>
+        </div>
+        <div class="roster-updated">Updated Mar 2026</div>
+      </div>
+      <div class="roster-body">
+        <div class="roster-col">
+          <div class="roster-section-title">Core Strengths</div>
+          <ul class="roster-list">
+            <li>Deep contextual reasoning — holds complex multi-step logic without drifting</li>
+            <li>Long memory integration — works with structured memory files to recall months of context</li>
+            <li>Nuanced writing — briefs, analysis, and explanations that don't sound like a robot</li>
+            <li>Tool use + code execution — can write, run, and debug scripts in one turn</li>
+            <li>Safety-tuned — least likely to hallucinate confidently on high-stakes decisions</li>
+          </ul>
+        </div>
+        <div class="roster-col">
+          <div class="roster-section-title">IntelAgent Deploys This For</div>
+          <ul class="roster-list">
+            <li>Primary agent conversations — the model you interact with daily</li>
+            <li>Complex analysis (portfolio reviews, research synthesis, decision frameworks)</li>
+            <li>Weekly report generation and market narrative</li>
+            <li>Anything requiring judgment, nuance, or multi-factor reasoning</li>
+          </ul>
+          <div class="roster-section-title" style="margin-top: 20px;">Recent Improvements</div>
+          <ul class="roster-list">
+            <li>Claude 4 (Sonnet): significantly improved tool use and agentic reliability</li>
+            <li>Extended thinking mode for high-stakes analytical tasks</li>
+            <li>Better instruction-following on complex system prompts</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="roster-panel" id="tab-grok">
+      <div class="roster-header">
+        <div>
+          <div class="roster-name">Grok 4</div>
+          <div class="roster-provider">xAI · <span class="status-badge active">Active — Intelligence Layer</span></div>
+        </div>
+        <div class="roster-updated">Updated Mar 2026</div>
+      </div>
+      <div class="roster-body">
+        <div class="roster-col">
+          <div class="roster-section-title">Core Strengths</div>
+          <ul class="roster-list">
+            <li>Real-time web search — no knowledge cutoff, searches the live web on every query</li>
+            <li>X/Twitter integration — reads social sentiment and trending narratives as they happen</li>
+            <li>Market intelligence — analyst chatter, breaking news, earnings reaction scanning</li>
+            <li>Unfiltered tone — will say what other models won't about controversial topics</li>
+            <li>Speed — fast responses even on complex search-augmented queries</li>
+          </ul>
+        </div>
+        <div class="roster-col">
+          <div class="roster-section-title">IntelAgent Deploys This For</div>
+          <ul class="roster-list">
+            <li>Social sentiment scanning (Teslo agent) — pre/post market intelligence</li>
+            <li>Breaking news analysis — macro events, geopolitical developments</li>
+            <li>Analyst alert monitoring — what's being said on X about your holdings right now</li>
+            <li>Any task requiring live data Claude doesn't have</li>
+          </ul>
+          <div class="roster-section-title" style="margin-top: 20px;">Recent Improvements</div>
+          <ul class="roster-list">
+            <li>Grok 4: major reasoning upgrade, now competitive with Claude on analysis</li>
+            <li>Improved source citation and fact attribution</li>
+            <li>Lower hallucination rate on financial data queries</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="roster-panel" id="tab-gemini">
+      <div class="roster-header">
+        <div>
+          <div class="roster-name">Gemini 2.5 Pro</div>
+          <div class="roster-provider">Google · <span class="status-badge evaluating">Evaluating</span></div>
+        </div>
+        <div class="roster-updated">Updated Mar 2026</div>
+      </div>
+      <div class="roster-body">
+        <div class="roster-col">
+          <div class="roster-section-title">Core Strengths</div>
+          <ul class="roster-list">
+            <li>Massive context window (1M+ tokens) — can process entire books, codebases, or document archives in one call</li>
+            <li>Document analysis — PDFs, reports, research papers at scale</li>
+            <li>Multimodal — images, video, audio, and text in a single query</li>
+            <li>Google ecosystem integration — Docs, Drive, Calendar native</li>
+            <li>Deep research mode — autonomous multi-step web research</li>
+          </ul>
+        </div>
+        <div class="roster-col">
+          <div class="roster-section-title">IntelAgent Deploys This For</div>
+          <ul class="roster-list">
+            <li>Large document analysis (annual reports, research papers, legal filings)</li>
+            <li>Clients with Google Workspace integration needs</li>
+            <li>Tasks requiring simultaneous processing of many sources</li>
+          </ul>
+          <div class="roster-section-title" style="margin-top: 20px;">Status Note</div>
+          <ul class="roster-list">
+            <li>Currently in evaluation for expanded deployment</li>
+            <li>2.5 Pro shows strong reasoning improvements over 2.0</li>
+            <li>Considering for document-heavy professional profiles (lawyers, researchers)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="roster-panel" id="tab-haiku">
+      <div class="roster-header">
+        <div>
+          <div class="roster-name">Claude Haiku / Gemini Flash</div>
+          <div class="roster-provider">Anthropic + Google · <span class="status-badge active">Active — Background Layer</span></div>
+        </div>
+        <div class="roster-updated">Updated Mar 2026</div>
+      </div>
+      <div class="roster-body">
+        <div class="roster-col">
+          <div class="roster-section-title">Core Strengths</div>
+          <ul class="roster-list">
+            <li>Extremely fast — responses in under a second for simple tasks</li>
+            <li>Low cost — 10-20× cheaper than flagship models per token</li>
+            <li>Reliable for structured tasks — parsing, filtering, classification</li>
+            <li>Scales without budget impact — run hundreds of checks per day</li>
+          </ul>
+        </div>
+        <div class="roster-col">
+          <div class="roster-section-title">IntelAgent Deploys This For</div>
+          <ul class="roster-list">
+            <li>All high-frequency background monitoring crons (price alerts, news scans)</li>
+            <li>Routine classification tasks — "is this email urgent?"</li>
+            <li>Pre-screening before escalating to a flagship model</li>
+            <li>Cost optimisation — the #1 reason clients don't overpay for API usage</li>
+          </ul>
+          <div class="roster-section-title" style="margin-top: 20px;">Why This Matters</div>
+          <ul class="roster-list">
+            <li>Most clients don't realise their crons could run on Haiku instead of Sonnet</li>
+            <li>Switching one monitor from Sonnet to Haiku = 15× cost reduction on that task</li>
+            <li>Monthly optimisation review catches these — and saves clients real money</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="roster-panel" id="tab-gpt">
+      <div class="roster-header">
+        <div>
+          <div class="roster-name">GPT-4o</div>
+          <div class="roster-provider">OpenAI · <span class="status-badge monitoring">Monitoring</span></div>
+        </div>
+        <div class="roster-updated">Updated Mar 2026</div>
+      </div>
+      <div class="roster-body">
+        <div class="roster-col">
+          <div class="roster-section-title">Core Strengths</div>
+          <ul class="roster-list">
+            <li>Strong multimodal — image analysis, voice, and text in one model</li>
+            <li>Broad tool ecosystem — widest third-party integration support</li>
+            <li>Code generation — still among the best for software development tasks</li>
+            <li>Familiarity — most users have existing OpenAI accounts and context</li>
+          </ul>
+        </div>
+        <div class="roster-col">
+          <div class="roster-section-title">Current Status</div>
+          <ul class="roster-list">
+            <li>Not currently in active IntelAgent deployments — Claude and Grok cover the same use cases with better results for our client profiles</li>
+            <li>GPT-5 expected to change this — monitoring closely for re-evaluation</li>
+            <li>May become relevant for clients with existing OpenAI integrations or voice-first workflows</li>
+          </ul>
+          <div class="roster-section-title" style="margin-top: 20px;">Watch For</div>
+          <ul class="roster-list">
+            <li>GPT-5 release — could shift the reasoning comparison significantly</li>
+            <li>OpenAI agent infrastructure (Operator) maturing for workflow use</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- COMPARISON -->
+<section id="comparison">
+  <div class="section-label">— The Difference</div>
+  <h2>You've tried AI.<br>This is different.</h2>
+  <p class="lead">If you've used generic AI chat tools and thought "that's fine but not life-changing" — you've been using the wrong tool. Here's why.</p>
+
+  <div style="overflow-x: auto; margin-top: 48px;">
+    <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
+      <thead>
+        <tr>
+          <th style="padding: 16px 24px; text-align: left; color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); width: 34%;"></th>
+          <th style="padding: 16px 24px; text-align: center; color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); width: 33%;">Generic AI Chatbots</th>
+          <th style="padding: 16px 24px; text-align: center; font-weight: 700; font-size: 14px; border-bottom: 1px solid var(--accent); width: 33%; background: rgba(124,106,247,0.06); border-radius: 8px 8px 0 0; color: var(--accent2);">IntelAgent</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Remembers who you are</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ Starts from zero every session</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ Permanent memory of your life & decisions</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Works without you asking</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ Only responds when prompted</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ Monitors, alerts, and acts autonomously</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Runs while you sleep</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ Only active when you open the app</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ 24/7 background operation</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Sends you alerts</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ You go to it</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ It comes to you — Telegram, WhatsApp, iMessage</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Knows your specific situation</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ Generic answers for everyone</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ Configured around your portfolio, patients, or business</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500;">Runs scheduled tasks</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗ No automation capability</td>
+          <td style="padding: 18px 24px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green); background: rgba(124,106,247,0.04);">✓ Price scans, morning briefs, weekly reports — automatic</td>
+        </tr>
+        <tr>
+          <td style="padding: 18px 24px; color: var(--muted); font-weight: 500;">Gets smarter over time</td>
+          <td style="padding: 18px 24px; text-align: center; color: var(--red);">✗ Same experience forever</td>
+          <td style="padding: 18px 24px; text-align: center; color: var(--green); background: rgba(124,106,247,0.04); border-radius: 0 0 8px 0;">✓ Every interaction builds richer context</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Claude Dispatch callout -->
+  <div style="margin-top: 48px; background: rgba(196,154,62,0.05); border: 1px solid rgba(196,154,62,0.2); border-radius: 20px; padding: 40px 48px;">
+    <div style="display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 260px;">
+        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); font-weight: 600; margin-bottom: 12px;">— What about Claude Dispatch?</div>
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; line-height: 1.3; margin-bottom: 12px;">Dispatch is a great start.<br>IntelAgent is where it ends up.</h3>
+        <p style="color: var(--muted); font-size: 15px; line-height: 1.7;">Anthropic launched Dispatch in March 2026 — a polished way to control your computer remotely via Claude. It's genuinely useful. But it's a single feature, not a system. No persistent memory. No custom monitoring. No integrations. No context that builds over months. It's the starter kit. IntelAgent is the professional tier.</p>
+      </div>
+      <div class="dispatch-table-wrap" style="flex: 1; min-width: 260px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          <thead>
+            <tr>
+              <th style="padding: 10px 16px; text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border);"></th>
+              <th style="padding: 10px 16px; text-align: center; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border);">Claude Dispatch</th>
+              <th style="padding: 10px 16px; text-align: center; color: var(--accent2); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--accent); font-weight: 700;">IntelAgent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--muted);">Persistent memory</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green);">✓</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--muted);">Proactive alerts to you</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green);">✓</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--muted);">Scheduled monitoring / crons</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green);">✓</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--muted);">Deep personal context</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green);">✓</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; color: var(--muted);">Remote desktop tasks</td>
+              <td style="padding: 10px 16px; text-align: center; color: var(--green);">✓</td>
+              <td style="padding: 10px 16px; text-align: center; color: var(--green);">✓</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top: 14px; font-size: 13px; color: var(--muted); font-style: italic;">Many IntelAgent clients discover us after Dispatch. It's a natural upgrade path.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NemoClaw / landscape callout -->
+  <div class="landscape-wrap" style="margin-top: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border2); border-radius: 16px; padding: 32px 40px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap;">
+    <div style="flex: 0 0 auto;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: 600; margin-bottom: 12px;">The Landscape — March 2026</div>
+      <div class="landscape-spectrum" style="display: flex; align-items: center; gap: 0; font-size: 13px; font-weight: 500;">
+        <div style="background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 110px;">
+          <div style="color: var(--muted); font-size: 11px; margin-bottom: 4px;">TOO SIMPLE</div>
+          <div style="color: var(--text);">Claude Dispatch</div>
+          <div style="color: var(--muted); font-size: 11px; margin-top: 2px;">Consumer tasks</div>
+        </div>
+        <div class="spectrum-connector" style="width: 24px; height: 1px; background: var(--border2); flex-shrink: 0;"></div>
+        <div style="background: linear-gradient(135deg, rgba(196,154,62,0.15), rgba(196,154,62,0.08)); border: 1px solid rgba(196,154,62,0.4); border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 120px;">
+          <div style="color: var(--accent); font-size: 11px; margin-bottom: 4px; font-weight: 700;">THE GAP</div>
+          <div style="color: var(--accent2); font-weight: 700;">Intel<strong>Agent</strong></div>
+          <div style="color: var(--muted); font-size: 11px; margin-top: 2px;">Personal professional</div>
+        </div>
+        <div class="spectrum-connector" style="width: 24px; height: 1px; background: var(--border2); flex-shrink: 0;"></div>
+        <div style="background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 110px;">
+          <div style="color: var(--muted); font-size: 11px; margin-bottom: 4px;">TOO COMPLEX</div>
+          <div style="color: var(--text);">NemoClaw</div>
+          <div style="color: var(--muted); font-size: 11px; margin-top: 2px;">Enterprise IT</div>
+        </div>
+      </div>
+    </div>
+    <div class="landscape-desc" style="flex: 1; min-width: 220px; border-left: 1px solid var(--border); padding-left: 32px;">
+      <p style="color: var(--muted); font-size: 14px; line-height: 1.7;">NVIDIA launched <strong style="color: var(--text);">NemoClaw</strong> at GTC 2026 — an enterprise agent stack requiring a DevOps team to deploy. Anthropic launched <strong style="color: var(--text);">Claude Dispatch</strong> for everyday remote tasks. <em style="color: var(--text);">Neither was built for the professional who needs a system configured around their specific life.</em> That's the gap IntelAgent was made to fill.</p>
+    </div>
+  </div>
+
+  <!-- Perplexity comparison callout -->
+  <div style="margin-top: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border2); border-radius: 16px; padding: 32px 40px;">
+    <div style="display: flex; align-items: flex-start; gap: 32px; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 260px;">
+        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); font-weight: 600; margin-bottom: 12px;">— What about Perplexity?</div>
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; line-height: 1.3; margin-bottom: 12px;">Perplexity answers questions.<br>IntelAgent answers them before you ask.</h3>
+        <p style="color: var(--muted); font-size: 15px; line-height: 1.7;">Perplexity is the world's best search engine — cited answers, real-time web, $20/month. It's exceptional at what it does. But it's purely reactive: you go to it, you ask, it answers. It has no memory of who you are, no idea what you care about, and no ability to reach out to you. IntelAgent doesn't wait. It watches your world and tells you what matters — before you even knew to ask.</p>
+      </div>
+      <div style="flex: 1; min-width: 260px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          <thead>
+            <tr>
+              <th style="padding: 10px 16px; text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border);"></th>
+              <th style="padding: 10px 16px; text-align: center; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border);">Perplexity Pro</th>
+              <th style="padding: 10px 16px; text-align: center; color: var(--accent2); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--accent); font-weight: 700;">IntelAgent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--muted);">Knows who you are</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green);">✓</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--muted);">Reaches out to you proactively</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green);">✓</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--muted);">Monitors your world 24/7</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green);">✓</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--muted);">Persistent memory over months</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--red);">✗</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green);">✓</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--muted);">Web search with citations</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green);">✓</td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: center; color: var(--green);">✓</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; color: var(--muted);">Price</td>
+              <td style="padding: 10px 16px; text-align: center; color: var(--muted); font-size: 13px;">$20/mo</td>
+              <td style="padding: 10px 16px; text-align: center; color: var(--accent2); font-size: 13px; font-weight: 600;">$200–500/mo</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top: 14px; font-size: 13px; color: var(--muted); font-style: italic;">Most IntelAgent clients already use Perplexity. They're not replacements — IntelAgent is the system that acts on what Perplexity finds.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- What it's not callout -->
+  <div style="margin-top: 48px; background: linear-gradient(135deg, rgba(124,106,247,0.08), rgba(56,189,248,0.05)); border: 1px solid rgba(124,106,247,0.2); border-radius: 20px; padding: 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
+    <div style="text-align: center;">
+      <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--gold); margin: 0 auto 20px;"></div>
+      <div style="font-weight: 700; margin-bottom: 8px; font-size: 16px;">It's not a chat interface</div>
+      <div style="color: var(--muted); font-size: 14px; line-height: 1.6;">You don't go to it. It comes to you. On the platform you already use, at the moment it matters.</div>
+    </div>
+    <div style="text-align: center;">
+      <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--gold); margin: 0 auto 20px;"></div>
+      <div style="font-weight: 700; margin-bottom: 8px; font-size: 16px;">It doesn't forget you tomorrow</div>
+      <div style="color: var(--muted); font-size: 14px; line-height: 1.6;">Every decision, preference, and conversation builds a permanent context that makes every future interaction smarter.</div>
+    </div>
+    <div style="text-align: center;">
+      <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--gold); margin: 0 auto 20px;"></div>
+      <div style="font-weight: 700; margin-bottom: 8px; font-size: 16px;">It doesn't wait to be asked</div>
+      <div style="color: var(--muted); font-size: 14px; line-height: 1.6;">It monitors your world 24/7 and reaches out when something needs your attention. You stay focused. It stays vigilant.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- PRIVACY -->
+<section id="privacy" style="background: var(--surface);">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;" class="privacy-grid">
+    <div>
+      <div class="section-label">— Your Data</div>
+      <h2>Your agent runs on<br>your machine.</h2>
+      <p style="font-size: 17px; color: var(--muted); line-height: 1.9; margin-bottom: 28px;">Every memory file, every configuration, every personal detail your agent knows — lives on your device. Not in our cloud. Not on anyone else's servers.</p>
+      <p style="font-size: 17px; color: var(--muted); line-height: 1.9;">We configure the system. You own it. We never see your data after handoff — and we never need to.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border: 1px solid var(--border); border-radius: 14px;">
+        <div style="width: 40px; height: 40px; background: rgba(196,154,62,0.08); border: 1px solid rgba(196,154,62,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px;">Local-first architecture</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Your agent runs on your Mac or PC. Memory files, cron jobs, and configurations are stored locally — never uploaded to a third-party service.</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border: 1px solid var(--border); border-radius: 14px;">
+        <div style="width: 40px; height: 40px; background: rgba(196,154,62,0.08); border: 1px solid rgba(196,154,62,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div>
+          <div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px;">You own everything we build</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Every file, script, and configuration is yours. Cancel anytime and keep it all — your agent doesn't stop working when you do.</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border: 1px solid var(--border); border-radius: 14px;">
+        <div style="width: 40px; height: 40px; background: rgba(196,154,62,0.08); border: 1px solid rgba(196,154,62,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div>
+          <div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px;">HIPAA-conscious by design</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">For healthcare professionals — no patient data ever touches the agent. Your agent knows <em>you</em>, not your patients. Configuration stays within your professional boundaries.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="section-label">— How It Works</div>
+  <h2>Live in 24 hours.</h2>
+  <p class="lead">Four steps from zero to a fully operational AI agent configured around your life.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h4>Intake Form</h4>
+      <p>Complete a structured questionnaire covering your profession, daily workflow, information needs, and goals. Takes 15 minutes.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h4>Discovery Call</h4>
+      <p>A 45-minute conversation to understand the nuance behind your answers and define exactly what your agent should do.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h4>We Build</h4>
+      <p>Your agent is configured: identity, memory architecture, automated monitors, alert crons, and communication style. Overnight.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h4>You Go Live</h4>
+      <p>Handoff call, walkthrough, and you're operational. Ongoing support and refinements included in all plans.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- WHY ME -->
+<section id="founder">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;">
+
+    <div>
+      <div class="section-label">— Why Work With Me</div>
+      <h2>Built by someone who uses it every day.</h2>
+      <p style="font-size: 17px; color: var(--muted); line-height: 1.9; margin-bottom: 28px;">I'm a physician who spent the last year building an AI system that manages my investment portfolio, monitors markets around the clock, and knows my life well enough to give me genuinely useful advice.</p>
+      <p style="font-size: 17px; color: var(--muted); line-height: 1.9; margin-bottom: 28px;">The trading system I built — which I use with real money, every day — runs 15+ signal layers including live order flow, machine learning, and on-chain data. It didn't start that way. It started with a simple idea and six months of iteration.</p>
+      <p style="font-size: 17px; color: var(--muted); line-height: 1.9; margin-bottom: 48px;">When colleagues and friends saw what it could do, they wanted one too. That's how this started. Every agent I configure is built around a real intake, a real conversation, and real constraints. Nothing generic. Nothing off the shelf.</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="display: flex; align-items: center; gap: 16px; padding: 20px 24px; border: 1px solid var(--border); background: var(--surface);">
+          <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex-shrink: 0;"></div>
+          <span style="font-size: 15px; color: var(--text);">MD — trained in high-stakes decision making under uncertainty</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 20px 24px; border: 1px solid var(--border); background: var(--surface);">
+          <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex-shrink: 0;"></div>
+          <span style="font-size: 15px; color: var(--text);">Active investor — portfolio monitored by the same system I build for clients</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 20px 24px; border: 1px solid var(--border); background: var(--surface);">
+          <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex-shrink: 0;"></div>
+          <span style="font-size: 15px; color: var(--text);">Built and configured agents for professionals across medicine, trading, and business</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 20px 24px; border: 1px solid var(--border); background: var(--surface);">
+          <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex-shrink: 0;"></div>
+          <span style="font-size: 15px; color: var(--text);">I take a small number of clients — every setup gets my full attention</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 20px 24px; border: 1px solid var(--border); background: var(--surface);">
+          <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex-shrink: 0;"></div>
+          <span style="font-size: 15px; color: var(--text);">The same framework powers a personal health optimization layer I built for my son — a Type 1 diabetic — surfacing glucose patterns his medical team can't see between quarterly appointments</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="background: var(--surface); border: 1px solid var(--border); padding: 40px;">
+        <div style="font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 20px;">The proof of concept</div>
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500; margin-bottom: 16px; letter-spacing: -0.3px;">Prometheus</h3>
+        <p style="font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 24px;">A live algorithmic trading system I built and run with real capital. 15+ signal layers — live order flow, machine learning, on-chain data, macro regime filters. Built iteratively over 6 months.</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div style="text-align: center; padding: 20px; border: 1px solid var(--border);">
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 500; color: var(--gold);">68%</div>
+            <div style="font-size: 12px; color: var(--muted); margin-top: 6px;">Win rate (backtested)</div>
+          </div>
+          <div style="text-align: center; padding: 20px; border: 1px solid var(--border);">
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 500; color: var(--gold);">15+</div>
+            <div style="font-size: 12px; color: var(--muted); margin-top: 6px;">Signal layers</div>
+          </div>
+          <div style="text-align: center; padding: 20px; border: 1px solid var(--border);">
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 500; color: var(--gold);">24/7</div>
+            <div style="font-size: 12px; color: var(--muted); margin-top: 6px;">Live monitoring</div>
+          </div>
+          <div style="text-align: center; padding: 20px; border: 1px solid var(--border);">
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 500; color: var(--gold);">6mo</div>
+            <div style="font-size: 12px; color: var(--muted); margin-top: 6px;">Iterative build</div>
+          </div>
+        </div>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 16px; font-style: italic;">Based on 7-month backtested data in predominantly bear market conditions.</p>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); padding: 32px;">
+        <p style="font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; line-height: 1.7; color: var(--text);">"I don't sell a concept. I show you exactly what I built, and then I build something equivalent for your life."</p>
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted);">— Founder, IntelAgent</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-label">— Pricing</div>
+  <h2>Simple, transparent,<br>no surprises.</h2>
+  <p class="lead">All plans include a discovery call, full build, and handoff. You own everything we create.</p>
+
+  <!-- ROI -->
+  <div style="margin: 48px 0; padding: 36px 48px; background: var(--surface); border: 1px solid var(--border2); border-radius: 16px; display: flex; align-items: center; gap: 56px; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 200px;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 10px;">The ROI Framing</div>
+      <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; line-height: 1.4;">Your time is worth more<br>than the subscription.</h3>
+    </div>
+    <div style="flex: 2; min-width: 280px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; text-align: center;">
+      <div>
+        <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px;">Hours saved per week</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; color: var(--accent2); line-height: 1;">5 hrs</div>
+        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">conservative estimate</div>
+      </div>
+      <div>
+        <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px;">Value at $150/hr</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; color: var(--accent2); line-height: 1;">$3K</div>
+        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">recovered per month</div>
+      </div>
+      <div>
+        <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px;">IntelAgent Pro cost</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; color: var(--green); line-height: 1;">$200</div>
+        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">per month retainer</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pricing">
+    <div class="plan">
+      <div class="plan-name">Essentials</div>
+      <div class="plan-price">$500<span> one-time</span></div>
+      <p class="plan-desc">For professionals who want a solid personal AI foundation — memory, identity, and 2-3 core automated monitors.</p>
+      <ul class="plan-features">
+        <li>Intake form + discovery call</li>
+        <li>Full agent configuration</li>
+        <li>Memory & identity setup</li>
+        <li>2 automated background checks</li>
+        <li>1 persona starter kit</li>
+        <li>Handoff walkthrough</li>
+        <li class="muted">Monthly maintenance</li>
+        <li class="muted">Ongoing refinements</li>
+      </ul>
+      <a href="intake.html" class="plan-btn secondary">Get Started</a>
+    </div>
+
+    <div class="plan featured">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Professional</div>
+      <div class="plan-price">$800<span> + $200/mo</span></div>
+      <p class="plan-desc">The complete setup with ongoing support, refinements, and monthly maintenance to keep your agent sharp.</p>
+      <ul class="plan-features">
+        <li>Everything in Essentials</li>
+        <li>Up to 8 automated background monitors</li>
+        <li>Full persona customization</li>
+        <li>Live data integrations</li>
+        <li>Monthly refinement session</li>
+        <li>Priority support</li>
+        <li>Quarterly memory consolidation</li>
+        <li>New automations as your needs grow</li>
+      </ul>
+      <div style="margin-bottom: 24px; padding: 16px 18px; background: rgba(196,154,62,0.06); border: 1px solid rgba(196,154,62,0.15); border-radius: 10px;">
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 8px;">Monthly retainer includes</div>
+        <div style="font-size: 13px; color: var(--muted); line-height: 1.8;">
+          ✦ Usage review + cost optimisation<br>
+          ✦ Memory maintenance &amp; context trimming<br>
+          ✦ One new cron or monitor per month<br>
+          ✦ "State of your agent" summary
+        </div>
+      </div>
+      <a href="intake.html" class="plan-btn primary">Book a Call →</a>
+    </div>
+
+    <div class="plan">
+      <div class="plan-name">Elite</div>
+      <div class="plan-price">$1,500<span> + $400/mo</span></div>
+      <p class="plan-desc">For complex use cases — traders, executives, or professionals with sophisticated multi-domain monitoring needs.</p>
+      <ul class="plan-features">
+        <li>Everything in Professional</li>
+        <li>Unlimited automated monitors</li>
+        <li>Custom data integrations</li>
+        <li>Weekly check-in calls</li>
+        <li>Domain-specific intelligence</li>
+        <li>White-glove ongoing service</li>
+        <li>Agent evolves with your needs</li>
+        <li>Direct access, always</li>
+      </ul>
+      <div style="margin-bottom: 24px; padding: 16px 18px; background: rgba(196,154,62,0.06); border: 1px solid rgba(196,154,62,0.15); border-radius: 10px;">
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 8px;">Monthly retainer includes</div>
+        <div style="font-size: 13px; color: var(--muted); line-height: 1.8;">
+          ✦ Everything in Professional<br>
+          ✦ Weekly system review<br>
+          ✦ Proactive optimisation before you notice issues<br>
+          ✦ Expert eyes on your system, every month
+        </div>
+      </div>
+      <a href="intake.html" class="plan-btn secondary">Let's Talk</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="section-label">— Early Clients</div>
+  <h2>What people say after<br>going live.</h2>
+
+  <div class="testimonials">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <q>I went from checking 6 different apps every morning to getting one message that tells me everything I need to know. The agent knows my portfolio, my risk tolerance, my stops. It's like having a trading partner who's always awake.</q>
+      <div class="testimonial-author">
+        <div class="author-avatar">M</div>
+        <div>
+          <div class="author-name">Michael R.</div>
+          <div class="author-title">Swing Trader, Vancouver</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <q>As a physician I don't have time to monitor journals. My agent scans everything and alerts me only when something genuinely changes clinical practice. In three months it's flagged two things I would have missed. That matters.</q>
+      <div class="testimonial-author">
+        <div class="author-avatar">S</div>
+        <div>
+          <div class="author-name">Dr. Sarah L.</div>
+          <div class="author-title">Cardiologist, Toronto</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <q>I was skeptical. I've tried every AI tool. This is different because it actually knows my business — our metrics, our competitors, what I care about. The morning brief alone saves me 90 minutes a day.</q>
+      <div class="testimonial-author">
+        <div class="author-avatar">J</div>
+        <div>
+          <div class="author-name">James T.</div>
+          <div class="author-title">Founder & CEO, Calgary</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- NUMBERS -->
+<section>
+  <div class="section-label">— Why Now</div>
+  <h2>The window is open.<br>Not for long.</h2>
+  <p class="lead">We're at an inflection point where the technology is powerful enough to be genuinely useful but complex enough that most people can't unlock it themselves.</p>
+
+  <div class="numbers-wrap">
+    <div style="text-align: center;">
+      <div class="section-label" style="display:inline-block; border-left: none; padding-left: 0;">— The Reality</div>
+      <h2 style="font-size: 36px;">What the data actually says</h2>
+    </div>
+    <div class="numbers-grid">
+      <div class="number-item">
+        <div class="number-value">57%</div>
+        <div class="number-label">of work hours are technically automatable with tools that exist today<br><span style="font-size: 11px; opacity: 0.6;">McKinsey, Nov 2025</span></div>
+      </div>
+      <div class="number-item">
+        <div class="number-value">25%</div>
+        <div class="number-label">of the average work week is lost to manual, repetitive tasks that could be delegated<br><span style="font-size: 11px; opacity: 0.6;">Smartsheet / McKinsey</span></div>
+      </div>
+      <div class="number-item">
+        <div class="number-value">24h</div>
+        <div class="number-label">from your intake call to a fully operational AI agent built around your life</div>
+      </div>
+      <div class="number-item">
+        <div class="number-value">~99%</div>
+        <div class="number-label">of the technical work is handled for you — you show up, we build it</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-label">— FAQ</div>
+  <h2>Questions we hear<br>before every first call.</h2>
+
+  <div style="margin-top: 56px; display: flex; flex-direction: column; gap: 2px; max-width: 800px;" id="faqList">
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Do I need to be technical to use this? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Not at all. You interact with your agent exactly like texting a smart assistant — through Telegram, WhatsApp, or iMessage. No apps to install, no dashboards to learn. We handle everything technical during setup, and the agent handles the rest.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">I already use ChatGPT. How is this different? <span class="faq-icon">+</span></div>
+      <div class="faq-a">ChatGPT starts fresh every conversation — it has no memory of who you are, what you've told it, or what matters to you. IntelAgent builds a persistent memory of your life, your rules, and your context over months. It also runs proactively in the background without you asking — monitoring, alerting, and briefing you. ChatGPT waits. Your IntelAgent acts.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">I already use Perplexity. How is this different? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Perplexity answers your questions. IntelAgent runs your life.<br><br>Perplexity is a smarter search engine — you ask, it searches the web, it answers. Every session starts from zero. It has no idea who you are, what you've built, or what matters to you.<br><br>IntelAgent is a persistent operating system built around your specific context. It knows your portfolio, your risk rules, your schedule, your goals. It doesn't wait for you to ask — it monitors, alerts, and acts in the background 24/7. The morning brief arrives before you open your eyes. The stop-loss fires before you check your phone. The opportunity surfaces before you read the news.<br><br>Perplexity is a tool. IntelAgent is infrastructure.</div>
+
+      <div class="faq-q">What happens to my data? Is it private? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Your agent runs on your own machine. Every memory file, configuration, and personal detail lives locally on your device — never uploaded to our servers. We configure your system during setup and never need access to your data afterward. You own everything we build, permanently.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">How long does setup actually take? <span class="faq-icon">+</span></div>
+      <div class="faq-a">The intake form takes about 10 minutes. The discovery call is 30–45 minutes. After that, your agent is typically live within 24 hours. Most clients are having their first real conversation with their agent by the next morning.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I cancel the monthly retainer? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes, anytime. No contracts, no penalties. And critically — your agent doesn't stop working when you cancel. Everything we built is yours: the files, the scripts, the configurations. The retainer covers ongoing maintenance and improvements, not access to your own system.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What if my needs change over time? <span class="faq-icon">+</span></div>
+      <div class="faq-a">That's exactly what the monthly retainer is for. As your life evolves — new job, new investments, new priorities — your agent evolves with it. We add monitors, update your memory, build new automations. The system gets more useful over time, not less.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">I'm a doctor. What about patient privacy? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Your agent is configured around you as a professional — your schedule, your CME tracking, your research interests, your workflow. It never touches patient data, and we specifically configure it to keep that boundary clean. Many of our clients are physicians, and privacy constraints are built into the setup from day one.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What does "24 hours to live" actually mean? <span class="faq-icon">+</span></div>
+      <div class="faq-a">After your discovery call, we build your agent's full configuration — memory files, identity, automated monitors, Telegram integration — and hand it off with a walkthrough session. Most clients have a working, personalised agent sending them their first morning brief the next day.</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<hr class="divider">
+
+<!-- CTA -->
+<div class="cta-wrap" id="cta">
+  <div class="cta-glow"></div>
+  <div class="section-label">— Get Started</div>
+  <h2>Your AI agent.<br><span class="highlight">Live in 24 hours.</span></h2>
+  <p style="font-size: 17px; margin-bottom: 12px;">The trail isn't going anywhere. But the window to build this before everyone else does is.</p>
+  <p style="font-size: 15px; color: var(--muted);">Discovery calls are 45 minutes and completely free. Limited spots available.</p>
+  <div class="hero-actions">
+    <a href="intake.html" class="btn-primary">Start Your Intake →</a>
+    <a href="#problem" class="btn-secondary">Learn More</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<hr class="divider">
+<footer>
+  <div class="footer-logo">Intel<span>Agent</span></div>
+  <p>© 2026 IntelAgent. Designed for professionals who move fast.</p>
+  <p>hello@intellagent.ai</p>
+</footer>
+
+<script>lucide.createIcons();</script>
 <script>
-  const canvas = document.getElementById('c');
-  const ctx = canvas.getContext('2d');
-  let W, H, pts = [];
-
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-
-  function spawn() {
-    pts = [];
-    const n = Math.floor((W * H) / 14000);
-    for (let i = 0; i < n; i++) {
-      pts.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.18,
-        vy: (Math.random() - 0.5) * 0.18,
-        r: Math.random() * 1.1 + 0.3,
-        a: Math.random() * 0.5 + 0.1
-      });
-    }
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    pts.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0) p.x = W;
-      if (p.x > W) p.x = 0;
-      if (p.y < 0) p.y = H;
-      if (p.y > H) p.y = 0;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(196,154,62,${p.a})`;
-      ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-
-  resize();
-  spawn();
-  window.addEventListener('resize', () => { resize(); spawn(); });
-  draw();
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+function switchTab(id) {
+  document.querySelectorAll('.roster-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.roster-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-tab="' + id + '"]').classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
 </script>
-
 </body>
 </html>
+
+<!-- v1773873890 -->
